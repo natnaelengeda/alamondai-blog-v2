@@ -1,0 +1,56 @@
+"use client";
+
+import React, { useEffect } from 'react'
+
+// Mantine
+import { MantineProvider } from '@mantine/core';
+
+// Components
+import Header from '@/components/header';
+import Footer from '@/components/footer';
+
+// Firebase
+import { analytics } from '@/lib/firebase';
+import { logEvent } from "firebase/analytics";
+
+// State
+import { Provider as StateProvider } from 'react-redux';
+import { persistor, store } from "./store";
+import { PersistGate } from 'redux-persist/integration/react';
+
+// Toast
+import { Toaster } from 'react-hot-toast';
+
+export default function Provider({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+
+  useEffect(() => {
+    if (analytics) {
+      logEvent(analytics, "screen_view", {
+        firebase_screen: "HomePage",
+        firebase_screen_class: "Home",
+      })
+    }
+  }, []);
+
+  return (
+    <MantineProvider>
+      <StateProvider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Header />
+          <div
+            className="w-full min-h-[calc(100vh-10rem)]">
+            {children}
+            <Toaster />
+          </div>
+          <Footer />
+        </PersistGate>
+      </StateProvider>
+    </MantineProvider>
+  )
+}
+
+

@@ -1,0 +1,69 @@
+import React from 'react'
+
+import Image from 'next/image'
+import { Button } from '@mantine/core'
+import { useRouter } from 'next/navigation'
+import ProfileCircle from './profile-circle'
+
+// Redux;
+import { useSelector } from 'react-redux'
+import { UserState } from '@/state/user'
+
+// App Asset
+import AppAsset from '@/core/AppAsset'
+
+export default function Header() {
+  const router = useRouter();
+  const user = useSelector((state: { user: UserState }) => state.user);
+
+  return (
+    <header
+      className='w-full h-20 border-b border-gray-200 px-3 md:px-10'>
+      {/* Main Content */}
+      <div className='w-full h-full mx-auto container flex flex-row items-center justify-between'>
+
+        {/* Header */}
+        <div
+          onClick={() => {
+            router.push("/");
+          }}
+          className='flex flex-row items-center justify-start gap-2 cursor-pointer'>
+          <Image
+            src={AppAsset.logo}
+            alt="Logo"
+            className='w-12 h-12' />
+          <p className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            Blog
+          </p>
+        </div>
+
+        {/* Login / Get Started */}
+        <div
+          style={{
+            display: user.isLoggedIn ? "none" : "flex"
+          }}
+          className='flex items-center justify-between gap-2'>
+          <Button
+            variant='transparent'
+            onClick={() => {
+              router.push("/auth")
+            }}>
+            Sign in
+          </Button>
+
+          <Button
+            variant="outline"
+            radius="xl"
+            onClick={() => {
+              router.push("/auth")
+            }}>
+            Get Started
+          </Button>
+        </div>
+
+        {/* Profile Image */}
+        <ProfileCircle />
+      </div>
+    </header>
+  )
+}
