@@ -37,7 +37,7 @@ export default function Home() {
   return (
     <div className="w-full h-full px-5 md:px-40 font-serif">
       {/* Main Content */}
-      <div className="w-full h-full mx-auto xl:container flex flex-col items-start justify-start pt-5 gap-5">
+      <div className="w-full h-full mx-auto xl:container flex flex-col items-start justify-start pt-5 gap-5 ">
 
         <div className="w-full h-auto">
 
