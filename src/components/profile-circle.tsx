@@ -54,7 +54,7 @@ export default function ProfileCircle() {
             const status = response.status;
             if (status == 200) {
               const data: UserInfo = response.data;
-              dispatch(addInfo(data));
+              // dispatch(addInfo(data));
               const init = initialExtract(data.name);
               const avatColor = lettersToHexColor(init);
 

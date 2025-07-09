@@ -98,7 +98,7 @@ export default function VerifyOtp({ setStep }: ISignIn) {
 
   return (
     <div
-      className='w-full h-auto bg-white flex flex-col items-start justify-start gap-7 p-5 mt-10'>
+      className='w-full h-auto bg-white flex flex-col items-start justify-start gap-3 p-5 mt-10'>
 
       {/* Title */}
       <div
@@ -114,51 +114,35 @@ export default function VerifyOtp({ setStep }: ISignIn) {
           </div>
         </div>
 
-        <div className='w-full h-auto flex flex-col items-center justify-start gap-2'>
+        <div className='w-full h-auto flex flex-col items-center justify-start gap-5 px-10'>
           <Text
             size='xl'>
-            Verify OTP
+            Verify Account
           </Text>
 
           <Text
-            size='sm'>
-            Enter the code that was sent to your email
+            size='sm'
+            className='text-center'>
+            Please verify your account by clicking the link sent to your email address.
           </Text>
         </div>
       </div>
 
       {/* Form */}
-      <form
-        onSubmit={form.onSubmit(sumbitFunction)}
+      <div
         className='w-full h-auto flex flex-col items-center justify-start gap-4'>
-        <PinInput
-          type="number"
-          length={6}
-          {...form.getInputProps('otp')} />
-
         <div
           className='w-full mt-6 flex items-center justify-center'>
-          {/* <span>Don't have an account? <span
-            className='text-primary underline cursor-pointer'
-            onClick={() => setStep("sign-up-with-email")}> Sign up</span>
-          </span> */}
           <Button
-            type="submit"
-            disabled={isLoading}>
+            onClick={() => window.open('https://mail.google.com', '_blank')}>
             <span
               className='w-full flex flex-row items-center justify-center gap-2'>
-              {
-                isLoading ?
-                  <><Loader
-                    color="white"
-                    size="xs" /> Loading</> :
-                  <>Verify</>
-              }
+              Verify
             </span>
           </Button>
         </div>
 
-      </form>
+      </div>
     </div>
   )
 }

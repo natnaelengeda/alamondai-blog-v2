@@ -48,7 +48,7 @@ export const userSlice = createSlice({
       state.token = action.payload.token;
       state.isLoggedIn = action.payload.isLoggedIn;
     },
-    addInfo: (state, action: PayloadAction<UserInfo>) => {
+    addInfo: (state, action: PayloadAction<{ name: string, bio: string, email: string, username: string, avatarUrl: string, isVerified: boolean }>) => {
       state.name = action.payload.name;
       state.bio = action.payload.bio;
       state.email = action.payload.email;

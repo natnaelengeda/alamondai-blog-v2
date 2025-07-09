@@ -8,7 +8,7 @@ import VerifyOtp from './components/verifyotp';
 import SignInwithEmail from './components/SignInwithEmail';
 import SignUpwithEmail from './components/SignUpwithEmail';
 
-export default function Sign() {
+export default function Auth() {
   const [step, setStep] = useState<string>("sign-in-with-email");
 
   return (
@@ -39,7 +39,7 @@ export default function Sign() {
               <SignInwithEmail setStep={setStep} /> :
               step == "sign-up-with-email" ?
                 <SignUpwithEmail setStep={setStep} /> :
-                step == "otp" ?
+                step == "verify-email" ?
                   <VerifyOtp setStep={setStep} /> : null
         }
       </div>

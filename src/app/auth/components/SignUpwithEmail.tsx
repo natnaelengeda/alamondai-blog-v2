@@ -22,6 +22,7 @@ import axios from "@/utils/axios";
 // Icons
 import { MdArrowBackIos } from 'react-icons/md';
 import { addTempUser } from '@/state/temp-user';
+import { addInfo, login } from '@/state/user';
 
 interface Input {
   fullName: string;
@@ -70,49 +71,73 @@ export default function SignUpwithEmail({ setStep }: ISignIn) {
 
   const sumbitFunction = async (value: Input) => {
     try {
-      // setIsLoading(true);
-      const userCredential = await createUserWithEmailAndPassword(auth, value.email, value.password);
-      const user = userCredential.user;
-      await sendEmailVerification(user);
-      return user;
-      // axios.post("/user/signup", {
-      //   name: value.fullName,
-      //   email: value.email.toLocaleLowerCase().trim(),
-      //   username: value.username.toLocaleLowerCase().trim(),
-      //   password: value.password
-      // }).then((response) => {
-      //   const status = response.status;
-      //   if (status == 200) {
-      //     toast.success("Verification Code has been sent to your email");
-      //     dispatch(addTempUser({
-      //       isOnProcess: true,
-      //       email: value.email,
-      //       username: value.username
-      //     }));
-      //     setStep("otp");
-      //   }
+      setIsLoading(true);
 
-      //   if (status == 201) {
-      //     toast.error("Email Already Registered");
-      //   }
+      axios.post("/user", {
+        fullName: value.fullName,
+        email: value.email.toLocaleLowerCase().trim(),
+        username: value.username.toLocaleLowerCase().trim(),
+        isVerified: false
+      }).then(async (response) => {
+        const status = response.status;
+        const msg = response.data.msg;
 
-      //   if (status == 202) {
-      //     toast.error("Username Already Taken");
-      //   }
-      // }).catch((error) => {
-      //   const status = error.response.status;
-      //   if (status == 400) {
-      //     toast.error("Unable to Send OTP, Try Again Later");
-      //   };
-      // }).finally(() => {
-      //   setIsLoading(false);
-      // })
+        if (status == 200) {
+          const data = response.data;
+
+          const userCredential = await createUserWithEmailAndPassword(auth, value.email, value.password);
+          if (userCredential && userCredential.user) {
+            const user = userCredential.user;
+            const idToken = await user.getIdToken();
+            localStorage.setItem("accessToken", idToken);
+
+            // User creation was successful
+            toast.success("Account created successfully! Please verify your email.");
+            await sendEmailVerification(userCredential.user);
+            dispatch(login({
+              id: data.userId,
+              role: "user",
+              token: idToken,
+              isLoggedIn: true
+            }));
+
+            dispatch(addInfo({
+              name: value.fullName,
+              bio: "",
+              email: value.email,
+              username: value.username,
+              avatarUrl: "",
+              isVerified: false,
+            }));
+
+            setStep("verify-email");
+          } else {
+            toast.error("Failed to create account. Please try again.");
+          }
+        }
+
+        if (status == 201) {
+          if (msg == "email_in_use") {
+            return toast.error("Email Already Registered");
+          }
+
+          if (msg == "username_in_use") {
+            return toast.error("Username Already Taken");
+          }
+        }
+      }).catch((error) => {
+        const status = error.response.status;
+        if (status == 400) {
+          toast.error("Unable to Send OTP, Try Again Later");
+        };
+      }).finally(() => {
+        setIsLoading(false);
+      })
 
     } catch (error) {
       showLoginError(error);
     }
   }
-
 
   return (
     <div

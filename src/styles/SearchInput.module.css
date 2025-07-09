@@ -1,0 +1,52 @@
+.searchInput {
+  width: 0;
+  opacity: 0;
+  padding-left: 0;
+  padding-right: 0;
+  /* border: 1px solid #d1d5db; */
+  /* border-radius: 0.375rem; */
+  background: white;
+  outline: none;
+  min-width: 0;
+  overflow: hidden;
+}
+
+@keyframes rollOut {
+  from {
+    width: 0;
+    opacity: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  to {
+    width: 10rem;
+    opacity: 1;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+@keyframes rollIn {
+  from {
+    width: 10rem;
+    opacity: 1;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  to {
+    width: 0;
+    opacity: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.searchInputExpanded {
+  animation: rollOut 0.3s forwards;
+}
+
+.searchInputCollapsed {
+  animation: rollIn 0.3s forwards;
+}

@@ -13,6 +13,15 @@ import Footer from '@/components/footer';
 import { analytics } from '@/lib/firebase';
 import { logEvent } from "firebase/analytics";
 
+// React Query
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
 // State
 import { Provider as StateProvider } from 'react-redux';
 import { persistor, store } from "./store";
@@ -27,6 +36,9 @@ export default function Provider({
   children: React.ReactNode;
 }>) {
 
+  // Create a client
+  const queryClient = new QueryClient()
+
   useEffect(() => {
     if (analytics) {
       logEvent(analytics, "screen_view", {
@@ -38,17 +50,19 @@ export default function Provider({
 
   return (
     <MantineProvider>
-      <StateProvider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <Header />
-          <div
-            className="w-full min-h-[calc(100vh-10rem)]">
-            {children}
-            <Toaster />
-          </div>
-          <Footer />
-        </PersistGate>
-      </StateProvider>
+      <QueryClientProvider client={queryClient}>
+        <StateProvider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <Header />
+            <div
+              className="w-full min-h-[calc(100vh-10rem)] pb-5">
+              {children}
+              <Toaster />
+            </div>
+            <Footer />
+          </PersistGate>
+        </StateProvider>
+      </QueryClientProvider>
     </MantineProvider>
   )
 }
