@@ -45,6 +45,7 @@ export default function LatestBlogs() {
         className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-5">
         {
           !isPending &&
+          data&&
           data.map((blog: IBlogCard, index: number) => {
             return (<BlogCard key={index} blog={blog} />)
           })
