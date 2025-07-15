@@ -10,6 +10,7 @@ import { meta } from "@/meta/metadata";
 // Styles
 import "./globals.css";
 import '@mantine/core/styles.css';
+import '@mantine/dropzone/styles.css';
 
 export const metadata: Metadata = meta
 

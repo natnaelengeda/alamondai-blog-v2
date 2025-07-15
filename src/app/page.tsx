@@ -16,6 +16,8 @@ import { FaInstagram } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 
+import axios from "@/utils/axios";
+
 // Styles
 import styles from "@/styles/SearchInput.module.css";
 
@@ -23,7 +25,7 @@ export default function Home() {
   const [isSearchExpanded, setisSearchExpanded] = useState(true);
   const [showInput, setShowInput] = useState(false);
 
-   // Handle expand
+  // Handle expand
   const handleExpand = () => {
     setShowInput(true);
     setisSearchExpanded(true);
@@ -34,6 +36,8 @@ export default function Home() {
     setisSearchExpanded(false);
     setTimeout(() => setShowInput(false), 300); // match animation duration
   };
+
+
   return (
     <div className="w-full h-full px-5 md:px-40 font-serif">
       {/* Main Content */}
@@ -58,35 +62,35 @@ export default function Home() {
               className="flex flex-row items-center justify-between gap-2">
               <div className="flex flex-row items-center justify-end gap-2">
                 <IoIosSearch
-                    onClick={handleExpand}
+                  onClick={handleExpand}
                   className="text-2xl text-gray-500 hover:text-black cursor-pointer" />
-            {showInput && (
-                <input
-                  className={`
+                {showInput && (
+                  <input
+                    className={`
                     ${styles.searchInput}
                     ${isSearchExpanded ? styles.searchInputExpanded : styles.searchInputCollapsed}
                   `}
-                  placeholder="Search"
-                  onBlur={handleCollapse}
-                  autoFocus={isSearchExpanded}
-                />
-              )}
+                    placeholder="Search"
+                    onBlur={handleCollapse}
+                    autoFocus={isSearchExpanded}
+                  />
+                )}
               </div>
-              <FaFacebook 
-                 onClick={()=>{
-                window.open("https://web.facebook.com/profile.php?id=61557949859443","_blank")
-              }}
-              className="text-2xl text-gray-500 hover:text-black cursor-pointer" />
+              <FaFacebook
+                onClick={() => {
+                  window.open("https://web.facebook.com/profile.php?id=61557949859443", "_blank")
+                }}
+                className="text-2xl text-gray-500 hover:text-black cursor-pointer" />
               <FaInstagram
-                 onClick={()=>{
-                window.open("https://www.instagram.com/alamondai/","_blank")
-              }}
-               className="text-2xl text-gray-500 hover:text-black cursor-pointer" />
+                onClick={() => {
+                  window.open("https://www.instagram.com/alamondai/", "_blank")
+                }}
+                className="text-2xl text-gray-500 hover:text-black cursor-pointer" />
               <CiLinkedin
-              onClick={()=>{
-                window.open("https://www.linkedin.com/company/102334748/admin/dashboard/","_blank")
-              }}
-               className="text-2xl text-gray-500 hover:text-black cursor-pointer" />
+                onClick={() => {
+                  window.open("https://www.linkedin.com/company/102334748/admin/dashboard/", "_blank")
+                }}
+                className="text-2xl text-gray-500 hover:text-black cursor-pointer" />
             </div>
 
           </div>

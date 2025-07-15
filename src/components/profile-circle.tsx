@@ -37,10 +37,10 @@ export default function ProfileCircle() {
 
   const LogoutFunction = async () => {
     try {
-      axios.delete(`/user/logout/${user.id}`)
-        .finally(() => {
-          dispatch(logout());
-        })
+      // axios.delete(`/user/logout/${user.id}`)
+      //   .finally(() => {
+      //     dispatch(logout());
+      //   })
     } catch (error) {
 
     }
@@ -49,30 +49,30 @@ export default function ProfileCircle() {
   const getuserProfile = async () => {
     try {
       if (user.isLoggedIn) {
-        axios.get(`/user/profile/${user.id}`)
-          .then((response) => {
-            const status = response.status;
-            if (status == 200) {
-              const data: UserInfo = response.data;
-              // dispatch(addInfo(data));
-              const init = initialExtract(data.name);
-              const avatColor = lettersToHexColor(init);
+        // axios.get(`/user/profile/${user.id}`)
+        //   .then((response) => {
+        //     const status = response.status;
+        //     if (status == 200) {
+        //       const data: UserInfo = response.data;
+        //       // dispatch(addInfo(data));
+        //       const init = initialExtract(data.name);
+        //       const avatColor = lettersToHexColor(init);
 
-              setInitials(init);
-              setAvatarColor(avatColor);
-            }
-          }).catch((error) => {
-            console.log(error)
-          })
+        //       setInitials(init);
+        //       setAvatarColor(avatColor);
+        //     }
+        //   }).catch((error) => {
+        //     console.log(error)
+        //   })
       }
     } catch (error) {
       console.error(error)
     }
   }
 
-  useEffect(() => {
-    getuserProfile();
-  }, [user.isLoggedIn]);
+  // useEffect(() => {
+  //   // getuserProfile();
+  // }, [user.isLoggedIn]);
 
   return (
     <div

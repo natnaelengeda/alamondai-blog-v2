@@ -7,7 +7,7 @@ import { Button, PasswordInput, Text, TextInput, Loader } from '@mantine/core';
 
 // State
 import { useDispatch } from 'react-redux';
-import { login } from '@/state/user';
+import { addInfo, login } from '@/state/user';
 
 // Axios
 import axios from "@/utils/axios";
@@ -20,12 +20,21 @@ import toast from 'react-hot-toast';
 
 // Icons
 import { MdArrowBackIos } from 'react-icons/md';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 type JwtPayload = {
   id: string;
   role: "user" | string; // If role can only be "user", use just "user"
   exp: number;
   iat: number;
+};
+
+type IUser = {
+  email: string;
+  name: string;
+  username: string;
+  profileImage: string;
 };
 
 interface ISignIn {
@@ -57,38 +66,74 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
 
   const sumbitFunction = (value: any) => {
     setIsLoading(true);
-    axios.post("/user/login", {
-      email: value.email,
-      password: value.password
-    }).then((response) => {
-      const status = response.status;
-      if (status == 200) {
-        const data = response.data;
-        const decoded: JwtPayload = jwtDecode(data.accessToken);
-        dispatch(login({
-          id: decoded.id,
-          role: decoded.role,
-          token: data.accessToken,
-          isLoggedIn: true,
-        }));
-        router.push("/");
-        toast.success("Login Success");
+    try {
+      signInWithEmailAndPassword(auth, value.email, value.password)
+        .then(async (userCredential) => {
+          const user = userCredential.user;
+          // Get the ID token
+          const idToken = await user.getIdToken();
 
-      }
-      if (status == 201) {
-        toast.error("User Not Found");
-        setIsLoading(false);
-      }
-      console.log(response);
-    }).catch((error) => {
-      console.error(error);
-      const status = error.response.status;
-      if (status == 402) {
-        toast.error("Invalid Email or Password");
-      }
+          dispatch(login({
+            isLoggedIn: true
+          }));
 
-      setIsLoading(false);
-    })
+          console.log('ID Token:', idToken);
+          axios.post("/user/login", {
+            email: value.email,
+            token: idToken
+          }).then((response) => {
+            const status = response.status;
+            if (status == 200) {
+              const data: IUser = response.data;
+
+              dispatch(addInfo({
+                name: data.name,
+                email: value.email,
+                username: data.username,
+                avatarUrl: data.profileImage
+              }));
+
+              router.push("/");
+              toast.success("Login Success");
+            }
+          }).catch((error) => {
+            const status = error.response.status;
+            if (status == 404) {
+              toast.error("User Not Found, Signup Again");
+            } else {
+              toast.error("Internal Server Error");
+            }
+          })
+
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+
+          switch (errorCode) {
+            case 'auth/invalid-email':
+              toast.error("Invalid email address.");
+              break
+            case 'auth/user-disabled':
+              toast.error("This user account has been disabled.");
+              break
+            case 'auth/user-not-found':
+              toast.error("No account found with this email.");
+              break
+            case 'auth/wrong-password':
+              toast.error("Incorrect Email or Password");
+              break
+            case 'auth/invalid-credential':
+              toast.error("Incorrect Email or Password");
+              break;
+            default:
+              toast.error("An error occurred. Please try again later.");
+          }
+        }).finally(() => {
+          setIsLoading(false);
+        });
+    } catch (error) {
+
+    }
   }
 
   return (
