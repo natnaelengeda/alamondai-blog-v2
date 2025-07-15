@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, Suspense, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import dynamic from 'next/dynamic';
 
 import { Loader, TextInput } from '@mantine/core';
@@ -148,7 +148,7 @@ export default function Page() {
       summary,
       content,
       author: user.email,
-      imageId,
+      imageId: imageId,
       date: new Date().toISOString(),
     };
 

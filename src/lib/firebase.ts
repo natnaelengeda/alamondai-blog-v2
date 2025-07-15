@@ -1,7 +1,7 @@
 "use client";
 
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth, } from "firebase/auth";
+import { connectAuthEmulator, getAuth, } from "firebase/auth";
 import { getFirestore, } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
@@ -23,10 +23,9 @@ const auth = getAuth(firebase);
 const firestore = getFirestore(firebase);
 
 // Connect emulators in development only
-// if (process.env.NEXT_PUBLIC_USE_EMULATOR === "true") {
-//   connectAuthEmulator(auth, "http://localhost:9099");
-//   connectFirestoreEmulator(firestore, "localhost", 8080);
-// }
+if (process.env.NEXT_PUBLIC_USE_EMULATOR === "true") {
+  connectAuthEmulator(auth, "http://localhost:9099");
+}
 
 // Optional Analytics (browser-only)
 let analytics: ReturnType<typeof getAnalytics> | undefined;
