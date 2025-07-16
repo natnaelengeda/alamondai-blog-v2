@@ -22,7 +22,7 @@ export default function Header() {
 
   return (
     <header
-      className='w-full h-20 border-b border-gray-200 md:px-10 px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] mx-auto '>
+      className='w-full h-20 border-b border-gray-200  px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] mx-auto '>
       {/* Main Content */}
       <div className='w-full h-full mx-auto container flex flex-row items-center justify-between'>
 
@@ -49,7 +49,7 @@ export default function Header() {
           className='flex items-center justify-between gap-2'>
           <Button
             style={{
-              width: width < 768 ? "none" : "flex"
+              display: width < 768 ? "none" : "flex"
             }}
             variant='transparent'
             onClick={() => {

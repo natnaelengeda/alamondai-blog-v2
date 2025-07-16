@@ -9,7 +9,7 @@ import SignInwithEmail from './components/SignInwithEmail';
 import SignUpwithEmail from './components/SignUpwithEmail';
 
 export default function Auth() {
-  const [step, setStep] = useState<string>("sign-in-with-email");
+  const [step, setStep] = useState<string>("signin");
 
   return (
     <div

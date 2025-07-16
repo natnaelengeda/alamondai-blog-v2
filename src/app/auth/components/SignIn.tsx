@@ -3,14 +3,19 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
 import { Button, Text } from '@mantine/core'
+import { useRouter } from 'next/navigation';
 
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 import axios from "@/utils/axios";
+import AppAsset from '@/core/AppAsset';
 
 // Icons
 import { MdOutlineMail } from "react-icons/md";
+import { useDispatch } from 'react-redux';
+import { login } from '@/state/user';
 
 interface ISignIn {
   setStep: Dispatch<SetStateAction<string>>;
@@ -18,6 +23,8 @@ interface ISignIn {
 
 export default function SignIn({ setStep }: ISignIn) {
   const auth = getAuth();
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const GoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
@@ -26,13 +33,24 @@ export default function SignIn({ setStep }: ISignIn) {
     const user = result.user;
     const idToken = await user.getIdToken();
 
+    const uid = user.uid;
+    const name = user.displayName;
+    const email = user.email;
+    const photoUrl = user.photoURL;
+
+    dispatch(login({
+      isLoggedIn: true,
+    }));
+
+    router.push("/");
     axios.post("/user/google-auth", {
-      idToken
+      uid: uid,
+      name: name,
+      email: email,
+      photoUrl: photoUrl,
     }).then(() => {
 
-    }).catch(() => {
-      toast.error("Unable to User Google Sign In");
-    })
+    });
 
   }
 
@@ -52,7 +70,7 @@ export default function SignIn({ setStep }: ISignIn) {
       <div className='w-80 mx-auto  flex flex-col items-center justify-center gap-4'>
 
         {/* Google */}
-        {/* <Button
+        <Button
           onClick={GoogleSignIn}
           variant="outline"
           radius={"xl"}
@@ -66,7 +84,7 @@ export default function SignIn({ setStep }: ISignIn) {
               className='w-5 h-5 object-contain' />
             Sign in with Google
           </span>
-        </Button> */}
+        </Button>
 
         {/* Email */}
         <Button
