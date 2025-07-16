@@ -40,7 +40,7 @@ export default function Home() {
 
 
   return (
-    <div className="w-full h-full px-5 md:px-40 font-serif">
+    <div className="w-full h-full px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] mx-auto font-serif">
       {/* Main Content */}
       <div className="w-full h-full mx-auto xl:container flex flex-col items-start justify-start pt-5 gap-5 ">
 
@@ -48,7 +48,7 @@ export default function Home() {
 
           {/* Title */}
           <div className="w-full">
-            <h1 className="text-5xl font-bold ">Alamondai Blog</h1>
+            <h1 className="text-4xl md:text-5xl font-bold ">Alamondai Blog</h1>
           </div>
 
           <div className="w-full flex flex-row items-center justify-between mt-20 border-b border-gray-200 pb-2 font-roboto">

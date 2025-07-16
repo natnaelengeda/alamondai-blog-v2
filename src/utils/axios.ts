@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import toast from "react-hot-toast";
 
 const instance = axios.create({
-  baseURL: "https://api.alamondaii.com",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',

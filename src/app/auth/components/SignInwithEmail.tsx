@@ -69,7 +69,6 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
             isLoggedIn: true
           }));
 
-          console.log('ID Token:', idToken);
           axios.post("/user/login", {
             email: value.email,
             token: idToken

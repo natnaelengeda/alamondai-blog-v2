@@ -85,8 +85,6 @@ export default function Page() {
         const file = image?.file;
         const arrayBuffer = await file.arrayBuffer();
 
-        console.log(arrayBuffer)
-
         const user = auth.currentUser;
         const token = await user?.getIdToken();
 

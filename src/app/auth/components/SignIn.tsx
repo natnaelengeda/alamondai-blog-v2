@@ -26,7 +26,6 @@ export default function SignIn({ setStep }: ISignIn) {
     const user = result.user;
     const idToken = await user.getIdToken();
 
-    console.log(idToken);
     axios.post("/user/google-auth", {
       idToken
     }).then(() => {

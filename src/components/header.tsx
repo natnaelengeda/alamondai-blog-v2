@@ -16,9 +16,13 @@ export default function Header() {
   const router = useRouter();
   const user = useSelector((state: { user: UserState }) => state.user);
 
+  const width = window.innerWidth;
+
+  console.log(width)
+
   return (
     <header
-      className='w-full h-20 border-b border-gray-200 px-3 md:px-10'>
+      className='w-full h-20 border-b border-gray-200 md:px-10 px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] mx-auto '>
       {/* Main Content */}
       <div className='w-full h-full mx-auto container flex flex-row items-center justify-between'>
 
@@ -32,7 +36,7 @@ export default function Header() {
             src={AppAsset.logo}
             alt="Logo"
             className='w-12 h-12' />
-          <p className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <p className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-serif">
             Blog
           </p>
         </div>
@@ -44,6 +48,9 @@ export default function Header() {
           }}
           className='flex items-center justify-between gap-2'>
           <Button
+            style={{
+              width: width < 768 ? "none" : "flex"
+            }}
             variant='transparent'
             onClick={() => {
               router.push("/auth")
