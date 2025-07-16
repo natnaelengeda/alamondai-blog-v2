@@ -12,8 +12,6 @@ import { addInfo, login } from '@/state/user';
 // Axios
 import axios from "@/utils/axios";
 
-// JWT
-import { jwtDecode } from "jwt-decode";
 
 // Toast
 import toast from 'react-hot-toast';
@@ -23,12 +21,6 @@ import { MdArrowBackIos } from 'react-icons/md';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 
-type JwtPayload = {
-  id: string;
-  role: "user" | string; // If role can only be "user", use just "user"
-  exp: number;
-  iat: number;
-};
 
 type IUser = {
   email: string;
@@ -182,7 +174,7 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
 
         <div
           className='w-full mt-6 flex items-center justify-between'>
-          <span>Don't have an account? <span
+          <span>{`Don't have an account? `}<span
             className='text-primary underline cursor-pointer'
             onClick={() => setStep("sign-up-with-email")}> Sign up</span>
           </span>

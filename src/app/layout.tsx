@@ -12,13 +12,16 @@ import "./globals.css";
 import '@mantine/core/styles.css';
 import '@mantine/dropzone/styles.css';
 
-export const metadata: Metadata = meta
+
+// Metadata is not directly usable in client components like this, but keeping it for reference if needed elsewhere.
+export const metadata: Metadata = meta;
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body>

@@ -68,12 +68,6 @@ export default function VerifyOtp({ setStep }: ISignIn) {
         if (status == 200) {
           const data = response.data;
           const decoded: JwtPayload = jwtDecode(data.accessToken);
-          dispatch(login({
-            id: decoded.id,
-            role: decoded.role,
-            token: data.accessToken,
-            isLoggedIn: true,
-          }));
           router.push("/");
           toast.success("Signup Success");
         }

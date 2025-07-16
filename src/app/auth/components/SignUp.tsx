@@ -3,8 +3,6 @@ import React from 'react'
 import Image from 'next/image'
 import { Button, Text } from '@mantine/core'
 
-import { getAuth, getRedirectResult, GoogleAuthProvider } from "firebase/auth";
-
 // App Asset
 import AppAsset from '@/core/AppAsset'
 

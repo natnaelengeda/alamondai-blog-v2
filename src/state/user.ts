@@ -23,15 +23,15 @@ const initialState: UserState = {
   isLoggedIn: false,
 };
 
-type UserInfo = {
-  avatarUrl: string | null;
-  bio: string | null;
-  email: string;
-  isVerified: boolean;
-  name: string;
-  role: "user" | string;
-  username: string;
-};
+// type UserInfo = {
+//   avatarUrl: string | null;
+//   bio: string | null;
+//   email: string;
+//   isVerified: boolean;
+//   name: string;
+//   role: "user" | string;
+//   username: string;
+// };
 
 
 export const userSlice = createSlice({

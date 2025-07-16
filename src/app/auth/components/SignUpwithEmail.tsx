@@ -95,19 +95,14 @@ export default function SignUpwithEmail({ setStep }: ISignIn) {
             toast.success("Account created successfully! Please verify your email.");
             await sendEmailVerification(userCredential.user);
             dispatch(login({
-              id: data.userId,
-              role: "user",
-              token: idToken,
               isLoggedIn: true
             }));
 
             dispatch(addInfo({
               name: value.fullName,
-              bio: "",
               email: value.email,
               username: value.username,
               avatarUrl: "",
-              isVerified: false,
             }));
 
             setStep("verify-email");

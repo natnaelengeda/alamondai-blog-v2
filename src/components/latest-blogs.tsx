@@ -3,33 +3,22 @@ import React, { useState } from 'react'
 
 
 // Components
-import { Text } from "@mantine/core"
 import LoadingBlogs from './loading-blogs';
-import BlogCard, { IBlogCard } from './blog-card';
+import BlogCard from './blog-card';
 
 // React Query
 import { useQuery } from '@tanstack/react-query';
 
-// Axios
-import axios from "@/utils/axios";
+// api
+import { fetchLatestBlogs } from '@/api/blog';
+
+// Types
+import { IBlog } from '@/types/blog';
 
 
 export default function LatestBlogs() {
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchLatestBlogs = async () => {
-    try {
-      const result = await axios.get("/blog");
-      const status = result.status;
-
-      if (status == 200) {
-        return result.data;
-      }
-
-    } catch (error) {
-
-    }
-  }
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['latest-blogs'],
@@ -40,15 +29,18 @@ export default function LatestBlogs() {
   console.log(data);
   return (
     <div className="w-full h-auto flex flex-col items-center justify-start gap-5">
-      <Text size="lg">Latest</Text>
       <div
         className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-5">
         {
-          !isPending &&
-          data&&
-          data.map((blog: IBlogCard, index: number) => {
-            return (<BlogCard key={index} blog={blog} />)
-          })
+          isError ? (
+            <div className="col-span-full text-center text-red-500 font-bold text-lg py-4">There is an error loading the latest blogs.</div>
+          ) : (
+            !isPending &&
+            data &&
+            data.map((blog: IBlog, index: number) => {
+              return (<BlogCard key={index} blog={blog} />)
+            })
+          )
         }
         <LoadingBlogs loading={isPending} />
       </div>

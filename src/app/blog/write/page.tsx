@@ -130,14 +130,13 @@ export default function Page() {
       return toast.error("Summary is required");
     }
 
-    // setLaoding(true);
+    setLaoding(true);
 
     if (!image) {
       uploadFunction(null);
     } else {
       const uploadImageFunc = await uploadImageAsBinary();
       const imageId = uploadImageFunc.id;
-
       uploadFunction(imageId);
     }
   }
@@ -158,12 +157,15 @@ export default function Page() {
         summary: blogData.summary,
         content: blogData.content,
         author: blogData.author,
-        date: blogData.date
+        imageId: imageId,
+        date: blogData.date,
       }).then((response) => {
         const status = response.status;
         if (status == 200) {
           toast.success("Blog Posted Successfully!");
           setTitle("");
+          setSummary("");
+          setImage(null);
           setContent(initialContent);
         }
 

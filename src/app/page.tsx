@@ -38,6 +38,7 @@ export default function Home() {
   };
 
 
+
   return (
     <div className="w-full h-full px-5 md:px-40 font-serif">
       {/* Main Content */}

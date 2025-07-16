@@ -10,67 +10,26 @@ import { Avatar } from '@mantine/core';
 import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
 
-export type IBlogCard = {
-  id: number;
-  author_id: number;
-  title: string;
-  content: string;            // HTML content
-  cover_image_url: string | null;
-  excerpt: string | null;
-  is_published: boolean;
-  published_at: string;       // ISO date string
-  created_at: string;         // ISO date string
-  updated_at: string;         // ISO date string
-  slug: string;
-  tags: string[] | null;      // assuming tags could be an array or null
-};
+// Types
+import { IBlog } from '@/types/blog';
+import { IUser } from '@/types/user';
 
-export interface IUser {
-  id: number;
-  fullName: string;
-  email: string;
-  username: string;
-  profileImage: string;
-  isVerified: boolean;
-  token: string;
-  createdAt: string;  // ISO date string
-  updatedAt: string;  // ISO date string
-}
 
 export type BlogCardProps = {
-  blog: IBlogCard;
+  blog: IBlog;
 };
 
 export default function BlogCard({ blog }: BlogCardProps) {
   const router = useRouter();
-  const [authorData, setAuthorData] = useState<IUser | null>(null);
   const [avatarColor, setAvatarColor] = useState<string>("blue");
   const [initials, setInitials] = useState<string>("");
 
-  const fetchUserInfo = async () => {
-    try {
-      axios.get(`/user/${blog.author_id}`)
-        .then((response) => {
-          const status = response.status;
-          if (status == 200) {
-            setAuthorData(response.data);
-
-            const init = initialExtract(response.data.fullName);
-            const avatColor = lettersToHexColor(init);
-            setInitials(init);
-            setAvatarColor(avatColor);
-          }
-        });
-    } catch (error) {
-
-    }
-  }
-
   useEffect(() => {
-    if (blog) {
-      fetchUserInfo();
-    }
-  }, [blog]);
+    const init = initialExtract(blog.user.fullName);
+    const avatColor = lettersToHexColor(init);
+    setInitials(init);
+    setAvatarColor(avatColor);
+  }, []);
 
   return (
     <article
@@ -81,7 +40,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
       {/* Cover image if exists */}
       {blog.cover_image_url ? (
         <img
-          src={blog.cover_image_url}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/blog/image/${blog.cover_image_url.id}`}
           alt={`Cover for ${blog.title}`}
           className="w-full h-60 md:h-48 object-cover"
           loading="lazy"
@@ -106,7 +65,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
       <div className='flex flex-row items-start justify-start gap-2'>
         {/* Author avatar placeholder */}
         <div className="w-10 h-10 rounded-full bg-gray-300 hidden items-center justify-center text-gray-600 font-semibold select-none">
-          {blog.author_id.toString().slice(0, 2)} {/* You can replace with real avatar */}
+
 
         </div>
         <Avatar
@@ -118,9 +77,9 @@ export default function BlogCard({ blog }: BlogCardProps) {
         </Avatar>
         <div className="flex flex-col items-start justify-start">
           {
-            authorData ?
+            blog.user ?
               <span>
-                <p className='text-sm'>{authorData.fullName}</p>
+                <p className='text-sm'>{blog.user.fullName ?? ""}</p>
               </span> :
               <div className="animate-pulse w-20 h-4 space-y-2 bg-gray-300">
               </div>

@@ -12,7 +12,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(async (config) => {
-  // @ts-ignore - extend config with custom flag
+  // @ts-expect-error - extend config with custom flag
   if (config.skipAuth) return config;
 
   const auth = getAuth();

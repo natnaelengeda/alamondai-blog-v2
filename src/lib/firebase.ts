@@ -23,7 +23,7 @@ const auth = getAuth(firebase);
 const firestore = getFirestore(firebase);
 
 // Connect emulators in development only
-if (process.env.NEXT_PUBLIC_USE_EMULATOR === "true") {
+if (process.env.NEXT_PUBLIC_USE_EMULATOR === 'true') {
   connectAuthEmulator(auth, "http://localhost:9099");
 }
 

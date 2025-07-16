@@ -37,10 +37,11 @@ export default function ProfileCircle() {
 
   const LogoutFunction = async () => {
     try {
-      // axios.delete(`/user/logout/${user.id}`)
-      //   .finally(() => {
-      //     dispatch(logout());
-      //   })
+      axios.delete(`/user/logout`)
+        .finally(() => {
+          dispatch(logout());
+          router.push("/")
+        })
     } catch (error) {
 
     }

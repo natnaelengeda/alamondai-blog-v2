@@ -3,20 +3,14 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import Image from 'next/image'
 import { Button, Text } from '@mantine/core'
 
-import { getAuth, getRedirectResult, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 import axios from "@/utils/axios";
 
-// App Asset
-import AppAsset from '@/core/AppAsset'
-
-
 // Icons
 import { MdOutlineMail } from "react-icons/md";
-
 
 interface ISignIn {
   setStep: Dispatch<SetStateAction<string>>;
@@ -35,7 +29,7 @@ export default function SignIn({ setStep }: ISignIn) {
     console.log(idToken);
     axios.post("/user/google-auth", {
       idToken
-    }).then((response) => {
+    }).then(() => {
 
     }).catch(() => {
       toast.error("Unable to User Google Sign In");

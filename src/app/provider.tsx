@@ -55,7 +55,7 @@ export default function Provider({
           <PersistGate loading={null} persistor={persistor}>
             <Header />
             <div
-              className="w-full min-h-[calc(100vh-10rem)] pb-5">
+              className="w-full min-h-[calc(100vh-10rem)] pb-5 scroll-smooth">
               {children}
               <Toaster />
             </div>
