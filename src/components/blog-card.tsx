@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import axios from "@/utils/axios";
+import Image from 'next/image';
 
-// AppAsset
-import AppAsset from '@/core/AppAsset';
+// Mantine
 import { Avatar } from '@mantine/core';
+
+// Utils
 import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
 
+// AppAsset
+import AppAsset from '@/core/AppAsset';
+
 // Types
 import { IBlog } from '@/types/blog';
-import { IUser } from '@/types/user';
 
 
 export type BlogCardProps = {
@@ -64,9 +66,8 @@ export default function BlogCard({ blog }: BlogCardProps) {
 
       <div className='flex flex-row items-start justify-start gap-2'>
         {/* Author avatar placeholder */}
-        <div className="w-10 h-10 rounded-full bg-gray-300 hidden items-center justify-center text-gray-600 font-semibold select-none">
-
-
+        <div
+          className="w-10 h-10 rounded-full bg-gray-300 hidden items-center justify-center text-gray-600 font-semibold select-none">
         </div>
         <Avatar
           radius="xl"

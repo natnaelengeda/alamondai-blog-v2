@@ -18,6 +18,18 @@ export const fetchLatestBlogs = async () => {
   }
 }
 
+export const fetchFeaturedBlog = async () => {
+  try {
+    const result = await axios.get('/blog/featured');
+    const status = result.status;
+
+    if (status == 200) {
+      return result.data;
+    }
+  } catch (error) {
+    return null;
+  }
+}
 export const fetchBlogBySlug = async (slug: string): Promise<IBlog> => {
   const response = await axios.get(`/blog/get-by-slug/${slug}`);
   return response.data;

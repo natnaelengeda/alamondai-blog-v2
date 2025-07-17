@@ -17,8 +17,6 @@ import { IBlog } from '@/types/blog';
 
 
 export default function LatestBlogs() {
-  const [isLoading, setIsLoading] = useState(true);
-
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['latest-blogs'],
