@@ -3,13 +3,38 @@ import React from 'react'
 // Icons
 import { IoMdLogOut } from 'react-icons/io';
 import { MdMessage } from 'react-icons/md';
-import { IconPackage } from '@tabler/icons-react';
-import { Button } from '@mantine/core';
 import { FaUserCircle } from 'react-icons/fa';
 import { CiCreditCard1, CiLink, CiSearch, CiSettings, CiUser } from 'react-icons/ci';
 
 
-export default function Sidebar() {
+export default function Sidebar({ setActiveTab, activeTab }: any) {
+  const tabs = [
+    {
+      id: 'profile',
+      label: 'Profile',
+      icon: <CiUser className="w-5 h-5" />,
+      hidden: false,
+    },
+    {
+      id: 'posts',
+      label: 'Posts',
+      icon: <CiCreditCard1 className="w-5 h-5" />,
+      hidden: false,
+    },
+    {
+      id: 'messaging',
+      label: 'Messaging',
+      icon: <MdMessage className="w-5 h-5" />,
+      hidden: false,
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      icon: <CiSettings className="w-5 h-5" />,
+      hidden: true,
+    },
+  ];
+
   return (
     <div className="flex flex-col w-64 bg-white border-r border-gray-200">
       {/* Header */}
@@ -25,30 +50,18 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
-          <li>
-            <a href="#" className="flex items-center gap-3 px-3 py-2 text-blue-600 rounded-lg bg-blue-50">
-              <CiUser className="w-5 h-5" />
-              Profile
-            </a>
-          </li>
-          <li>
-            <a href="#" className="flex items-center gap-3 px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-50">
-              <CiCreditCard1 className="w-5 h-5" />
-              Posts
-            </a>
-          </li>
-          <li>
-            <a href="#" className="flex items-center gap-3 px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-50">
-              <MdMessage className="w-5 h-5" />
-              Messaging
-            </a>
-          </li>
-          <li>
-            <a href="#" className="flex items-center gap-3 px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-50">
-              <CiSettings className="w-5 h-5" />
-              Settings
-            </a>
-          </li>
+          {tabs.map(tab => (
+            <li
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={tab.hidden ? 'hidden' : 'cursor-pointer'}>
+              <a
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg ${activeTab === tab.id ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-50'}`}>
+                {tab.icon}
+                {tab.label}
+              </a>
+            </li>
+          ))}
         </ul>
       </nav>
 

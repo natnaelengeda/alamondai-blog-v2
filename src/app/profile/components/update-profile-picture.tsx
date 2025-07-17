@@ -6,6 +6,8 @@ import { Modal, Button, Avatar } from '@mantine/core';
 import imageCompression from "browser-image-compression";
 import { auth } from '@/lib/firebase';
 import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfileImage, UserState } from '@/state/user';
 
 interface ImageFile {
   file: File
@@ -25,6 +27,8 @@ export default function UpdateProfilePictureModal({ opened, close, profileImage,
   const [image, setImage] = useState<ImageFile | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state: { user: UserState }) => state.user);
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -78,10 +82,12 @@ export default function UpdateProfilePictureModal({ opened, close, profileImage,
         body: arrayBuffer
       });
 
-      const status = response.status;
-
       if (response.status == 200) {
+        const data = await response.json();
+        const newUrl = `${process.env.NEXT_PUBLIC_API_URL}/user/image/${data.id}`
+        setImage(null);
         toast.success("Image Update Success");
+        dispatch(updateProfileImage({ avatarUrl: newUrl }));
         close();
       }
 
@@ -110,10 +116,10 @@ export default function UpdateProfilePictureModal({ opened, close, profileImage,
                   className='cursor-pointer'>
                   {initials}
                 </Avatar>) :
-                ((profileImage) ? (
+                ((user.avatarUrl) ? (
                   <Avatar
                     radius="xl"
-                    src={`${process.env.NEXT_PUBLIC_API_URL}/user/image/${profileImage.id}`}
+                    src={user.avatarUrl}
                     color={avatarColor}
                     size={300}
                     className='cursor-pointer'>

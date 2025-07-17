@@ -47,6 +47,9 @@ export const userSlice = createSlice({
       state.username = action.payload.username;
       state.avatarUrl = action.payload.avatarUrl;
     },
+    updateProfileImage: (state, action: PayloadAction<{ avatarUrl: string }>) => {
+      state.avatarUrl = action.payload.avatarUrl
+    },
     logout: (state) => {
       state.role = "";
       state.isLoggedIn = false;
@@ -54,6 +57,6 @@ export const userSlice = createSlice({
   }
 })
 
-export const { login, logout, addInfo } = userSlice.actions;
+export const { login, logout, addInfo, updateProfileImage } = userSlice.actions;
 export const selectUser = (state: { user: UserState }) => state.user;
 export default userSlice.reducer;

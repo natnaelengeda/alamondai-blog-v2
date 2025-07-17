@@ -23,12 +23,16 @@ import toast from 'react-hot-toast';
 import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
 import { IconCameraBitcoin } from '@tabler/icons-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfileImage, UserState } from '@/state/user';
 
 export default function Profile() {
   const [opened, { open, close }] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
   const [avatarColor, setAvatarColor] = useState<string>("blue");
   const [initials, setInitials] = useState<string>("");
+  const user = useSelector((state: { user: UserState }) => state.user);
+  const dispatch = useDispatch();
 
   const router = useRouter();
 
@@ -97,8 +101,6 @@ export default function Profile() {
 
   useEffect(() => {
     if (data) {
-      console.log(data)
-
       const init = initialExtract(data.fullName);
       const avatColor = lettersToHexColor(init);
       setInitials(init);
@@ -116,6 +118,13 @@ export default function Profile() {
 
       form.setValues(initialValues);
       initialValuesRef.current = initialValues;
+
+      // Check Latest Image
+      const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}/user/image/${data.image.id}`
+      if (user.avatarUrl !== imageUrl) {
+        dispatch(updateProfileImage({ avatarUrl: imageUrl }));
+      }
+
     }
   }, [data]);
 
@@ -161,10 +170,10 @@ export default function Profile() {
             <div
               className="relative items-center justify-center flex-shrink-0 w-24 h-24 overflow-hidden bg-gray-200 rounded-full">
               {
-                (data && data.image) ? (
+                (user.avatarUrl) ? (
                   <Avatar
                     radius="xl"
-                    src={`${process.env.NEXT_PUBLIC_API_URL}/user/image/${data.image.id}`}
+                    src={user.avatarUrl}
                     color={avatarColor}
                     size={100}
                     className='cursor-pointer'>
