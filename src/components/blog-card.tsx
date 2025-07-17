@@ -38,7 +38,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
       onClick={() => {
         router.push(`/blog/${blog.slug}`)
       }}
-      className="w-full space-y-4 p-4  max-w-3xl mx-auto  transition-shadow duration-200 cursor-pointer">
+      className="w-full space-y-4 p-4 max-w-3xl mx-auto transition-shadow duration-200 cursor-pointer">
       {/* Cover image if exists */}
       {blog.cover_image_url ? (
         <img

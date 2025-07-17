@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 // React Query
@@ -21,6 +22,7 @@ import { lettersToHexColor } from '@/utils/lettersToHexColor';
 
 
 export default function FeaturedBlog() {
+  const router = useRouter();
   const [avatarColor, setAvatarColor] = useState<string>("blue");
   const [initials, setInitials] = useState<string>("");
 
@@ -106,7 +108,9 @@ export default function FeaturedBlog() {
 
   if (!isPending && data.length > 0) {
     return (
-      <div className="w-full space-y-4 p-4 grid grid-cols-3 mx-auto gap-5">
+      <article
+        onClick={() => router.push(`/blog/${data[0].slug}`)}
+        className="w-full space-y-4 p-4 grid grid-cols-1 md:grid-cols-3 mx-auto md:gap-5 cursor-pointer">
 
         {/* Image Card */}
         <div
@@ -131,13 +135,13 @@ export default function FeaturedBlog() {
           )}
         </div>
 
-        <div className='w-full col-span-1 flex flex-col gap-10'>
-          <div className="space-y-2 mt-4">
+        <div className='w-full col-span-1 flex flex-col gap-4 md:gap-10'>
+          <div className="space-y-2 md:mt-4">
             <div className="w-full">
-              <h1 className='text-3xl font-bold'>{data[0].title}</h1>
+              <h1 className='text-lg md:text-3xl font-bold'>{data[0].title}</h1>
             </div>
             <div className="w-5/6">
-              <p className='text-lg font-light'>{data[0].excerpt}</p></div>
+              <p className='text-sm md:text-lg font-light'>{data[0].excerpt}</p></div>
           </div>
 
           <div className="w-full flex flex-row items-start justify-start gap-3">
@@ -160,9 +164,8 @@ export default function FeaturedBlog() {
               </div>
             </div>
           </div>
-
         </div>
-      </div>
+      </article>
     );
   }
 

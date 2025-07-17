@@ -2,11 +2,6 @@
 
 import { useState } from "react";
 
-import Image from "next/image";
-
-// AppAsset
-import AppAsset from "@/core/AppAsset";
-
 // Icons
 import { CiLinkedin } from "react-icons/ci";
 import { FaInstagram } from "react-icons/fa";
@@ -16,7 +11,10 @@ import { IoIosSearch } from "react-icons/io";
 // Styles
 import styles from "@/styles/SearchInput.module.css";
 
-export default function HeadingBar() {
+interface IHeadingBar {
+  setTab: React.Dispatch<React.SetStateAction<string>>
+}
+export default function HeadingBar({ setTab }: IHeadingBar) {
   const [isSearchExpanded, setisSearchExpanded] = useState(true);
   const [showInput, setShowInput] = useState(false);
 
@@ -51,8 +49,12 @@ export default function HeadingBar() {
     <div className="w-full flex flex-row items-center justify-between mt-20 border-b border-gray-200 pb-2 font-roboto">
       {/* Latest / Newsletter */}
       <div className="flex flex-row items-center justify-between divide-x-2 divide-gray-300 space-x-2 gap-2 text-gray-500">
-        <p className="uppercase pr-5 cursor-pointer">latest</p>
-        <p className="uppercase cursor-pointer">newsletter</p>
+        <p
+          className="uppercase pr-5 cursor-pointer"
+          onClick={() => setTab('latest')}>latest</p>
+        <p
+          className="uppercase cursor-pointer"
+          onClick={() => setTab('newsletter')}>newsletter</p>
       </div>
 
       {/* Social Media */}

@@ -47,3 +47,8 @@ export const useBlog = (slug: string) => {
     // keepPreviousData: true, // 🔁 smooth UI when changing slugs
   });
 };
+
+export const emailSubscription = async (email: string) => {
+  const response = await axios.post('/blog/subscribe-newsletter', { email });
+  return response;
+}
