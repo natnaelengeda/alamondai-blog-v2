@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from 'react'
 
-
 // Components
 import LoadingBlogs from './loading-blogs';
 import BlogCard from './blog-card';
@@ -24,12 +23,12 @@ export default function LatestBlogs() {
   })
 
   return (
-    <div className="w-full h-auto flex flex-col items-center justify-start gap-5">
+    <div className="flex flex-col items-center justify-start w-full h-auto gap-5">
       <div
-        className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-5">
+        className="grid w-full h-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-5">
         {
           isError ? (
-            <div className="col-span-full text-center text-red-500 font-bold text-lg py-4">There is an error loading the latest blogs.</div>
+            <div className="py-4 text-lg font-bold text-center text-red-500 col-span-full">There is an error loading the latest blogs.</div>
           ) : (
             !isPending &&
             data &&

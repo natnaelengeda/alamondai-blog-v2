@@ -17,7 +17,7 @@ const initialState: UserState = {
   bio: "",
   email: "",
   username: "",
-  avatarUrl: "",
+  avatarUrl: null,
   isVerified: false,
   role: "",
   isLoggedIn: false,

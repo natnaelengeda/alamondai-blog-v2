@@ -2,7 +2,7 @@
 import React, { useState, useCallback } from 'react'
 import dynamic from 'next/dynamic';
 
-import { Loader, TextInput } from '@mantine/core';
+import { Loader } from '@mantine/core';
 
 // Staes
 import { useSelector } from 'react-redux';
@@ -182,8 +182,8 @@ export default function Page() {
   }
 
   return (
-    <div className='w-full h-full container mx-auto pt-10'>
-      <div className='w-full h-full flex flex-col items-start justify-start gap-5 px-4 mx:px-0'>
+    <div className='container w-full h-full pt-10 mx-auto'>
+      <div className='flex flex-col items-start justify-start w-full h-full gap-5 px-4 mx:px-0'>
         <Form
           title={title}
           setTitle={setTitle}
@@ -197,9 +197,9 @@ export default function Page() {
           content={content}
           setContent={setContent} />
 
-        <div className='w-full flex items-center justify-end'>
+        <div className='flex items-center justify-end w-full'>
           <button
-            className="px-4 py-2 bg-secondary text-white rounded-sm cursor-pointer hover:opacity-90"
+            className="px-4 py-2 text-white rounded-sm cursor-pointer bg-secondary hover:opacity-90"
             disabled={loading}
             onClick={handleSave}>
             {

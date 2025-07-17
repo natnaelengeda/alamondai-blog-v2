@@ -20,9 +20,9 @@ export default function Header() {
 
   return (
     <header
-      className='w-full h-20 border-b border-gray-200  px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] mx-auto '>
+      className='w-full h-20 border-b border-gray-200  px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] mx-auto bg-white z-50'>
       {/* Main Content */}
-      <div className='w-full h-full mx-auto container flex flex-row items-center justify-between'>
+      <div className='container flex flex-row items-center justify-between w-full h-full mx-auto'>
 
         {/* Header */}
         <div
@@ -34,7 +34,7 @@ export default function Header() {
             src={AppAsset.logo}
             alt="Logo"
             className='w-12 h-12' />
-          <p className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-serif">
+          <p className="font-serif text-2xl font-bold text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">
             Blog
           </p>
         </div>

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { useRouter } from 'next/navigation';
 
@@ -30,7 +31,7 @@ type IUser = {
 };
 
 interface ISignIn {
-  setStep: Dispatch<SetStateAction<string>>;
+  setStep: any;
 }
 
 export default function SignInwithEmail({ setStep }: ISignIn) {
@@ -69,6 +70,9 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
             isLoggedIn: true
           }));
 
+          router.push("/");
+          toast.success("Login Success");
+
           axios.post("/user/login", {
             email: value.email,
             token: idToken
@@ -84,8 +88,7 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
                 avatarUrl: data.profileImage
               }));
 
-              router.push("/");
-              toast.success("Login Success");
+
             }
           }).catch((error) => {
             const status = error.response.status;
@@ -129,17 +132,17 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
 
   return (
     <div
-      className='w-full h-full bg-white flex flex-col items-start justify-start gap-7 p-5 pb-16 mt-16'>
+      className='flex flex-col items-start justify-start w-full h-full p-5 pb-16 mt-16 bg-white gap-7'>
 
       {/* Title */}
       <div
-        className='relative w-full flex justify-center'>
-        <div className='absolute top-2 left-0 '>
+        className='relative flex justify-center w-full'>
+        <div className='absolute left-0 top-2 '>
           <div
             onClick={() => {
               setStep("signin");
             }}
-            className='bg-primary w-7 h-7 rounded-full flex items-center justify-center pl-1 cursor-pointer'>
+            className='flex items-center justify-center pl-1 rounded-full cursor-pointer bg-primary w-7 h-7'>
             <MdArrowBackIos
               className='text-white' />
           </div>
@@ -154,7 +157,7 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
       {/* Form */}
       <form
         onSubmit={form.onSubmit(sumbitFunction)}
-        className='w-full h-auto flex flex-col items-start justify-start gap-4'>
+        className='flex flex-col items-start justify-start w-full h-auto gap-4'>
         <TextInput
           className='w-full'
           withAsterisk
@@ -172,16 +175,16 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
           {...form.getInputProps('password')} />
 
         <div
-          className='w-full mt-6 flex items-center justify-between'>
+          className='flex items-center justify-between w-full mt-6'>
           <span>{`Don't have an account? `}<span
-            className='text-primary underline cursor-pointer'
+            className='underline cursor-pointer text-primary'
             onClick={() => setStep("sign-up-with-email")}> Sign up</span>
           </span>
           <Button
             type="submit"
             disabled={isLoading}>
             <span
-              className='w-full flex flex-row items-center justify-center gap-2'>
+              className='flex flex-row items-center justify-center w-full gap-2'>
               {
                 isLoading ?
                   <><Loader

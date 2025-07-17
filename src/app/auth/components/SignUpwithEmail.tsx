@@ -136,17 +136,17 @@ export default function SignUpwithEmail({ setStep }: ISignIn) {
 
   return (
     <div
-      className='w-full h-auto bg-white flex flex-col items-start justify-start gap-7 p-5 mt-10'>
+      className='flex flex-col items-start justify-start w-full h-auto p-5 mt-10 bg-white gap-7'>
 
       {/* Title */}
       <div
-        className='relative w-full flex justify-center'>
-        <div className='absolute top-2 left-0 '>
+        className='relative flex justify-center w-full'>
+        <div className='absolute left-0 top-2 '>
           <div
             onClick={() => {
               setStep("signin");
             }}
-            className='bg-primary w-7 h-7 rounded-full flex items-center justify-center pl-1 cursor-pointer'>
+            className='flex items-center justify-center pl-1 rounded-full cursor-pointer bg-primary w-7 h-7'>
             <MdArrowBackIos
               className='text-white' />
           </div>
@@ -161,7 +161,7 @@ export default function SignUpwithEmail({ setStep }: ISignIn) {
       {/* Form */}
       <form
         onSubmit={form.onSubmit(sumbitFunction)}
-        className='w-full h-auto flex flex-col items-start justify-start gap-4'>
+        className='flex flex-col items-start justify-start w-full h-auto gap-4'>
         <TextInput
           className='w-full'
           withAsterisk
@@ -195,16 +195,16 @@ export default function SignUpwithEmail({ setStep }: ISignIn) {
           {...form.getInputProps('password')} />
 
         <div
-          className='w-full mt-6 flex items-center justify-end'>
+          className='flex items-center justify-end w-full mt-6'>
           {/* <span>Don't have an account? <span
-            className='text-primary underline cursor-pointer'
+            className='underline cursor-pointer text-primary'
             onClick={() => setStep("sign-up-with-email")}> Sign up</span>
           </span> */}
           <Button
             type="submit"
             disabled={isLoading}>
             <span
-              className='w-full flex flex-row items-center justify-center gap-2'>
+              className='flex flex-row items-center justify-center w-full gap-2'>
               {
                 isLoading ?
                   <><Loader

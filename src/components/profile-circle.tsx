@@ -10,10 +10,14 @@ import { Menu, Button, Text } from '@mantine/core';
 import { useDispatch, useSelector } from 'react-redux'
 import { addInfo, logout, UserState } from '@/state/user'
 
-// Utils
+// Firebase
+import { getAuth, signOut } from "firebase/auth";
 import axios from "@/utils/axios";
+
+// Utils
 import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
+import toast from 'react-hot-toast';
 
 type UserInfo = {
   avatarUrl: string | null;
@@ -37,11 +41,16 @@ export default function ProfileCircle() {
 
   const LogoutFunction = async () => {
     try {
-      axios.delete(`/user/logout`)
-        .finally(() => {
+      const auth = getAuth();
+
+      signOut(auth)
+        .then(() => {
           dispatch(logout());
-          router.push("/")
-        })
+        }).catch((error) => {
+          toast.error("Unable to logout, please try again later.");
+        });
+
+
     } catch (error) {
 
     }
@@ -71,32 +80,32 @@ export default function ProfileCircle() {
     }
   }
 
-  // useEffect(() => {
-  //   // getuserProfile();
-  // }, [user.isLoggedIn]);
+  const getProfileImage = async () => {
+
+  }
+
 
   return (
     <div
       style={{
         display: user.isLoggedIn ? "flex" : "none"
       }}
-      className='w-20 flex items-center justify-end'>
+      className='flex items-center justify-end w-20'>
       <Menu
         shadow="md"
         width={200}
         position='bottom'>
         <Menu.Target>
-          <Avatar
-            radius="xl"
-            color={avatarColor}
-            size={50}
-            className='cursor-pointer'>
-            {initials}
-          </Avatar>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item>
-            <div className='w-full h-auto flex flex-row items-center justify-start gap-2'>
+          {
+            user.avatarUrl ?
+              <Avatar
+                radius="xl"
+                src={user.avatarUrl}
+                color={avatarColor}
+                size={50}
+                className='cursor-pointer'>
+                {initials}
+              </Avatar> :
               <Avatar
                 radius="xl"
                 color={avatarColor}
@@ -104,7 +113,30 @@ export default function ProfileCircle() {
                 className='cursor-pointer'>
                 {initials}
               </Avatar>
-              <div className='w-full flex flex-col items-start justify-start'>
+          }
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item>
+            <div className='flex flex-row items-center justify-start w-full h-auto gap-2'>
+              {
+                user.avatarUrl ?
+                  <Avatar
+                    radius="xl"
+                    src={user.avatarUrl}
+                    color={avatarColor}
+                    size={50}
+                    className='cursor-pointer'>
+                    {initials}
+                  </Avatar> :
+                  <Avatar
+                    radius="xl"
+                    color={avatarColor}
+                    size={50}
+                    className='cursor-pointer'>
+                    {initials}
+                  </Avatar>
+              }
+              <div className='flex flex-col items-start justify-start w-full'>
                 <p>{user.name}</p>
                 <p className='text-xs'>@{user.username}</p>
               </div>
@@ -114,7 +146,8 @@ export default function ProfileCircle() {
             onClick={() => router.push("/blog/write")}>
             Write
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item
+            onClick={() => router.push("/profile")}>
             Profile
           </Menu.Item>
           <Menu.Divider />
