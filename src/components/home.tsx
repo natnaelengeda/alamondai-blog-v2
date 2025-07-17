@@ -13,10 +13,10 @@ export default function Home() {
   const [tab, setTab] = useState<string>("latest");
 
   return (
-    <div className="w-full h-full mx-auto container flex flex-col items-start justify-start pt-5 gap-5 ">
+    <div className="container flex flex-col items-start justify-start w-full h-full gap-5 pt-5 mx-auto ">
 
       <div className="w-full h-auto">
-        <Title />
+        <Title text={"Alamondai Blog"} />
         <HeadingBar
           setTab={setTab} />
       </div>

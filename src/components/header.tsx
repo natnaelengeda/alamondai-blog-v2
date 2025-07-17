@@ -18,8 +18,6 @@ export default function Header() {
 
   const width = window.innerWidth;
 
-  console.log(width)
-
   return (
     <header
       className='w-full h-20 border-b border-gray-200  px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] mx-auto '>

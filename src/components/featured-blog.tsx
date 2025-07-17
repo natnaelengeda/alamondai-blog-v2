@@ -20,6 +20,40 @@ import AppAsset from '@/core/AppAsset';
 import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
 
+export const convertFullDateToDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const month = date.getMonth() + 1; // Months are zero-based in JavaScript
+
+  switch (month) {
+    case 1:
+      return `January ${date.getDate()}`;
+    case 2:
+      return `February ${date.getDate()}`;
+    case 3:
+      return `March ${date.getDate()}`;
+    case 4:
+      return `April ${date.getDate()}`;
+    case 5:
+      return `May ${date.getDate()}`;
+    case 6:
+      return `June ${date.getDate()}`;
+    case 7:
+      return `July ${date.getDate()}`;
+    case 8:
+      return `August ${date.getDate()}`;
+    case 9:
+      return `September ${date.getDate()}`;
+    case 10:
+      return `October ${date.getDate()}`;
+    case 11:
+      return `November ${date.getDate()}`;
+    case 12:
+      return `December ${date.getDate()}`;
+    default:
+      return `Invalid month`;
+  }
+
+}
 
 export default function FeaturedBlog() {
   const router = useRouter();
@@ -33,40 +67,7 @@ export default function FeaturedBlog() {
     refetchOnWindowFocus: false, // 👌 prevent refetch when tab refocus
   });
 
-  const convertFullDateToDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const month = date.getMonth() + 1; // Months are zero-based in JavaScript
 
-    switch (month) {
-      case 1:
-        return `January ${date.getDate()}`;
-      case 2:
-        return `February ${date.getDate()}`;
-      case 3:
-        return `March ${date.getDate()}`;
-      case 4:
-        return `April ${date.getDate()}`;
-      case 5:
-        return `May ${date.getDate()}`;
-      case 6:
-        return `June ${date.getDate()}`;
-      case 7:
-        return `July ${date.getDate()}`;
-      case 8:
-        return `August ${date.getDate()}`;
-      case 9:
-        return `September ${date.getDate()}`;
-      case 10:
-        return `October ${date.getDate()}`;
-      case 11:
-        return `November ${date.getDate()}`;
-      case 12:
-        return `December ${date.getDate()}`;
-      default:
-        return `Invalid month`;
-    }
-
-  }
 
   useEffect(() => {
     if (data) {
