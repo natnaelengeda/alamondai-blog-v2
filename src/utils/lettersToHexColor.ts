@@ -1,7 +1,8 @@
 export function lettersToHexColor(letter1: string, letter2?: string): string {
   // Validate input
   if (!letter1 || typeof letter1 !== 'string') {
-    throw new Error('First letter must be a valid string');
+    // throw new Error('First letter must be a valid string');
+    return "#000000"
   }
 
   // Normalize letters to uppercase and get first character

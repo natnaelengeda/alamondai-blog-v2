@@ -30,6 +30,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 // Toast
 import { Toaster } from 'react-hot-toast';
 
+export const queryClient = new QueryClient()
+
 export default function Provider({
   children,
 }: Readonly<{
@@ -37,7 +39,6 @@ export default function Provider({
 }>) {
 
   // Create a client
-  const queryClient = new QueryClient()
 
   useEffect(() => {
     if (analytics) {

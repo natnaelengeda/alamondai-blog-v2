@@ -23,17 +23,6 @@ const initialState: UserState = {
   isLoggedIn: false,
 };
 
-// type UserInfo = {
-//   avatarUrl: string | null;
-//   bio: string | null;
-//   email: string;
-//   isVerified: boolean;
-//   name: string;
-//   role: "user" | string;
-//   username: string;
-// };
-
-
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -50,13 +39,22 @@ export const userSlice = createSlice({
     updateProfileImage: (state, action: PayloadAction<{ avatarUrl: string }>) => {
       state.avatarUrl = action.payload.avatarUrl
     },
+    updateNameUserName: (state, action: PayloadAction<{ name: string, username: string }>) => {
+      state.name = action.payload.name;
+      state.username = action.payload.username;
+    },
     logout: (state) => {
+      state.name = "";
+      state.email = "";
+      state.username = "";
+      state.avatarUrl = "";
+      state.isVerified = false;
       state.role = "";
       state.isLoggedIn = false;
     }
   }
 })
 
-export const { login, logout, addInfo, updateProfileImage } = userSlice.actions;
+export const { login, logout, addInfo, updateProfileImage, updateNameUserName } = userSlice.actions;
 export const selectUser = (state: { user: UserState }) => state.user;
 export default userSlice.reducer;

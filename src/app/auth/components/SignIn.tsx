@@ -15,10 +15,10 @@ import AppAsset from '@/core/AppAsset';
 // Icons
 import { MdOutlineMail } from "react-icons/md";
 import { useDispatch } from 'react-redux';
-import { login } from '@/state/user';
+import { addInfo, login } from '@/state/user';
 
 interface ISignIn {
-  setStep: Dispatch<SetStateAction<string>>;
+  setStep: any;
 }
 
 export default function SignIn({ setStep }: ISignIn) {
@@ -48,10 +48,39 @@ export default function SignIn({ setStep }: ISignIn) {
       name: name,
       email: email,
       photoUrl: photoUrl,
-    }).then(() => {
+    }).then((response) => {
+      const status = response.status;
+      const data = response.data;
+      if (status == 200) {
+        if (data.msg == "login") {
+          const loggedInUser = data.user;
 
+          const profileImage =
+            loggedInUser.profileImage ? loggedInUser.profileImage :
+              loggedInUser.image ?
+                `${process.env.NEXT_PUBLIC_API_URL}/user/image/${loggedInUser.image.id}` :
+                null;
+
+          dispatch(addInfo({
+            name: loggedInUser.fullName,
+            email: loggedInUser.email,
+            username: loggedInUser.username,
+            avatarUrl: profileImage
+          }));
+        } else if (data.msg == "signup") {
+          dispatch(addInfo({
+            name: name ?? "",
+            email: email ?? "",
+            username: "",
+            avatarUrl: photoUrl ?? "",
+          }))
+        }
+
+      }
+
+    }).catch((error) => {
+      toast.error("Unable to Login");
     });
-
   }
 
   return (

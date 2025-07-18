@@ -24,7 +24,7 @@ import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
 import { IconCameraBitcoin } from '@tabler/icons-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProfileImage, UserState } from '@/state/user';
+import { addInfo, updateNameUserName, updateProfileImage, UserState } from '@/state/user';
 
 export default function Profile() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -33,7 +33,6 @@ export default function Profile() {
   const [initials, setInitials] = useState<string>("");
   const user = useSelector((state: { user: UserState }) => state.user);
   const dispatch = useDispatch();
-
   const router = useRouter();
 
   const { isPending, isError, data, error } = useQuery({
@@ -80,16 +79,29 @@ export default function Profile() {
       .then((response) => {
         console.log(response)
         const user = response.user;
+
         form.setValues({
           fullName: user.fullName,
           bio: user.bio,
           twitterUsername: user.twitterUsername,
           mobileNumber: user.mobileNumber,
+          username: user.username
         });
+
+        dispatch(updateNameUserName({
+          name: user.fullName,
+          username: user.username,
+        }));
+
         initialValuesRef.current = { ...form.values };
         toast.success("Profile updated successfully!");
       }).catch((error) => {
-        toast.error("Failed to update profile. Please try again later.");
+        const status = error.response.status;
+        if (status == 403) {
+          toast.error("Username already taken");
+        } else {
+          toast.error("Failed to update profile. Please try again later.");
+        }
       }).finally(() => {
         setLoading(false);
       })
@@ -247,9 +259,7 @@ export default function Profile() {
                   className="w-full"
                   key={form.key('username')}
                   {...form.getInputProps('username')}
-                  disabled
                 />
-                <p className="mt-1 text-xs text-gray-500">Can't be changed</p>
               </div>
 
               <div>

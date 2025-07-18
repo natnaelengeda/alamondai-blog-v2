@@ -1,13 +1,34 @@
 import React from 'react'
 
+// Firebase
+import { getAuth, signOut } from "firebase/auth";
+
+// Hooks
+import { useLogout } from '@/lib/useLogout';
+
+// toast
+import toast from 'react-hot-toast';
+
 // Icons
 import { IoMdLogOut } from 'react-icons/io';
 import { MdMessage } from 'react-icons/md';
 import { FaUserCircle } from 'react-icons/fa';
-import { CiCreditCard1, CiLink, CiSearch, CiSettings, CiUser } from 'react-icons/ci';
-
+import { CiCreditCard1, CiSettings, CiUser } from 'react-icons/ci';
 
 export default function Sidebar({ setActiveTab, activeTab }: any) {
+  const logout = useLogout();
+
+  const LogoutFunction = async () => {
+    const auth = getAuth();
+
+    signOut(auth)
+      .then(() => {
+        logout();
+      }).catch((error) => {
+        toast.error("Unable to logout, please try again later.");
+      });
+  }
+
   const tabs = [
     {
       id: 'profile',
@@ -73,8 +94,11 @@ export default function Sidebar({ setActiveTab, activeTab }: any) {
           <span>v1.0.0</span>
         </div>
 
-        <button className="flex items-center gap-2 text-sm text-red-500 hover:text-red-600">
-          <IoMdLogOut className="w-4 h-4" />
+        <button
+          onClick={LogoutFunction}
+          className="w-full h-10 flex items-center gap-2 text-sm text-red-500 hover:text-red-600 hover:bg-red-50 rounded px-3 cursor-pointer">
+          <IoMdLogOut
+            className="w-4 h-4" />
           Logout
         </button>
       </div>
