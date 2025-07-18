@@ -119,10 +119,12 @@ export default function Profile() {
       form.setValues(initialValues);
       initialValuesRef.current = initialValues;
 
-      // Check Latest Image
-      const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}/user/image/${data.image.id}`
-      if (user.avatarUrl !== imageUrl) {
-        dispatch(updateProfileImage({ avatarUrl: imageUrl }));
+      if (data.image) {
+        // Check Latest Image
+        const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}/user/image/${data.image.id}`
+        if (user.avatarUrl !== imageUrl) {
+          dispatch(updateProfileImage({ avatarUrl: imageUrl }));
+        }
       }
 
     }

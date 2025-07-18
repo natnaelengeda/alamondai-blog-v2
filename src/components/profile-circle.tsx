@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 // Components
 import { Avatar } from '@mantine/core';
-import { Menu, Button, Text } from '@mantine/core';
+import { Menu } from '@mantine/core';
 
 // Redux;
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,22 +12,14 @@ import { addInfo, logout, UserState } from '@/state/user'
 
 // Firebase
 import { getAuth, signOut } from "firebase/auth";
-import axios from "@/utils/axios";
 
 // Utils
 import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
+
+// Toast
 import toast from 'react-hot-toast';
 
-type UserInfo = {
-  avatarUrl: string | null;
-  bio: string | null;
-  email: string;
-  isVerified: boolean;
-  name: string;
-  role: "user" | string;
-  username: string;
-};
 
 export default function ProfileCircle() {
   const user = useSelector((state: { user: UserState }) => state.user);
@@ -37,7 +29,6 @@ export default function ProfileCircle() {
   // States
   const [initials, setInitials] = useState<string>("");
   const [avatarColor, setAvatarColor] = useState<string>("blue");
-
 
   const LogoutFunction = async () => {
     try {
@@ -56,34 +47,13 @@ export default function ProfileCircle() {
     }
   }
 
-  const getuserProfile = async () => {
-    try {
-      if (user.isLoggedIn) {
-        // axios.get(`/user/profile/${user.id}`)
-        //   .then((response) => {
-        //     const status = response.status;
-        //     if (status == 200) {
-        //       const data: UserInfo = response.data;
-        //       // dispatch(addInfo(data));
-        //       const init = initialExtract(data.name);
-        //       const avatColor = lettersToHexColor(init);
+  useEffect(() => {
+    const init = initialExtract(user.name);
+    const avatColor = lettersToHexColor(init);
 
-        //       setInitials(init);
-        //       setAvatarColor(avatColor);
-        //     }
-        //   }).catch((error) => {
-        //     console.log(error)
-        //   })
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const getProfileImage = async () => {
-
-  }
-
+    setInitials(init);
+    setAvatarColor(avatColor);
+  }, []);
 
   return (
     <div

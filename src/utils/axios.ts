@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAuth } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import toast from "react-hot-toast";
 
 const instance = axios.create({
@@ -15,7 +15,6 @@ instance.interceptors.request.use(async (config) => {
   // @ts-expect-error - extend config with custom flag
   if (config.skipAuth) return config;
 
-  const auth = getAuth();
   const user = auth.currentUser;
 
   if (user) {

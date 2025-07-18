@@ -52,3 +52,8 @@ export const emailSubscription = async (email: string) => {
   const response = await axios.post('/blog/subscribe-newsletter', { email });
   return response;
 }
+
+export const getBlogForUser = async () => {
+  const response = await axios.get('/blog/get-user-blog');
+  return response.data;
+}

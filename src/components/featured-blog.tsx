@@ -70,7 +70,7 @@ export default function FeaturedBlog() {
 
 
   useEffect(() => {
-    if (data) {
+    if (data && data.length > 0) {
       const init = initialExtract(data[0].user.fullName);
       const avatColor = lettersToHexColor(init);
       setInitials(init);
@@ -107,7 +107,7 @@ export default function FeaturedBlog() {
     );
   }
 
-  if (!isPending && data.length > 0) {
+  if (!isPending && data && data.length > 0) {
     return (
       <article
         onClick={() => router.push(`/blog/${data[0].slug}`)}
