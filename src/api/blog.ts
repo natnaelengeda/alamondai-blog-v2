@@ -57,3 +57,8 @@ export const getBlogForUser = async () => {
   const response = await axios.get('/blog/get-user-blog');
   return response.data;
 }
+
+export const deleteBlogById = async ({ id }: { id: number }) => {
+  const response = await axios.delete(`/blog/${id}`);
+  return response;
+}

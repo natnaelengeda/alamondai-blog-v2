@@ -29,8 +29,8 @@ instance.interceptors.response.use(
   response => response,
   async (error) => {
     if (error.response?.status === 401) {
-      toast.error("You need to log in again.");
-      window.location.href = "/auth";
+      // toast.error("You need to log in again.");
+      // window.location.href = "/auth";
     }
 
     return Promise.reject(error);
