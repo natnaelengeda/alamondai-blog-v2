@@ -24,8 +24,6 @@ export default function Posts() {
     refetchOnWindowFocus: false, // 👌 prevent refetch when tab refocus
   });
 
-  console.log(data);
-
   return (
     <div
       className="flex flex-col flex-1">

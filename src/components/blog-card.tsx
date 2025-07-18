@@ -119,8 +119,6 @@ export default function BlogCard({ blog, owner = false }: BlogCardProps) {
             </time>
           </div>
         </div>
-
-
       </article>
       {
         deleteBlog &&

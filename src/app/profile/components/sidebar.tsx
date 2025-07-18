@@ -57,7 +57,7 @@ export default function Sidebar({ setActiveTab, activeTab }: any) {
   ];
 
   return (
-    <div className="flex flex-col w-64 bg-white border-r border-gray-200">
+    <div className="flex flex-col w-full md:w-64 bg-white border-r border-gray-200">
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center gap-2">
@@ -70,7 +70,7 @@ export default function Sidebar({ setActiveTab, activeTab }: any) {
 
       {/* Navigation */}
       <nav className="flex-1 p-4">
-        <ul className="space-y-2">
+        <ul className="space-y-2 flex flex-row md:flex-col">
           {tabs.map(tab => (
             <li
               key={tab.id}
@@ -87,7 +87,7 @@ export default function Sidebar({ setActiveTab, activeTab }: any) {
       </nav>
 
       {/* Bottom Section */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="hidden md:flex p-4 border-t border-gray-200">
 
         <div className="flex items-center justify-between mb-2 text-sm text-gray-500">
           <span>Alamondai Blog</span>

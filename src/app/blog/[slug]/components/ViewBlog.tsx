@@ -1,22 +1,37 @@
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Button } from '@mantine/core';
+
+// Mantine
+import { Button, Modal, TextInput } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 import DOMPurify from 'dompurify';  // Optional but HIGHLY recommended for safety
-import AppAsset from '@/core/AppAsset';
+
+// State
+import { UserState } from '@/state/user';
+import { useSelector } from 'react-redux';
+
+// Api
 import axios from '@/utils/axios';
+import { useQueryClient } from '@tanstack/react-query';
+
+// Toast
+import toast from 'react-hot-toast';
+
+import AppAsset from '@/core/AppAsset';
 
 // Types
 import { IBlog } from '@/types/blog'
-import { UserState } from '@/state/user';
-import toast from 'react-hot-toast';
+import { IconHeart, IconHeartFilled, IconMessageDots, IconShare } from '@tabler/icons-react';
 
 export default function ViewBlog({ blog }: { blog: IBlog }) {
   const [showComments, setShowComments] = useState(false);
   const [commentLoading, setCommentLoading] = useState(false);
   const [commentText, setCommentText] = useState('');
+  const [isLiked, setIsLiked] = useState(false);
+  const [opened, { open, close }] = useDisclosure(false);
   const user = useSelector((state: { user: UserState }) => state.user);
+  const queryClient = useQueryClient();
 
   const sanitizedContent = DOMPurify.sanitize(blog.content);
 
@@ -28,6 +43,7 @@ export default function ViewBlog({ blog }: { blog: IBlog }) {
           const status = response.status;
           if (status == 200) {
             toast.success("Comment Added Successfully");
+            queryClient.refetchQueries({ queryKey: ['blog', blog.slug] });
           }
         })
       setCommentText(''); // Clear the textarea
@@ -43,7 +59,12 @@ export default function ViewBlog({ blog }: { blog: IBlog }) {
     try {
       axios.post('/blog/like-blog', { blogId: blog.id })
         .then((response) => {
-          console.log(response)
+          console.log(response);
+          const status = response.status;
+          if (status == 200) {
+            queryClient.refetchQueries({ queryKey: ['blog', blog.slug] });
+            setIsLiked(!isLiked);
+          }
         }).catch((error) => {
 
         });
@@ -53,6 +74,47 @@ export default function ViewBlog({ blog }: { blog: IBlog }) {
       alert('Failed to like blog.');
     }
   };
+
+  const handleShareBlog = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success('Link copied to clipboard!');
+      axios.post('/blog/share-blog', { blogId: blog.id });
+      queryClient.refetchQueries({ queryKey: ['blog', blog.slug] });
+      close();
+    } catch (error) {
+      console.error('Error sharing blog:', error);
+      toast.error('Failed to copy link.');
+    }
+  };
+
+  const blogActions = [
+    {
+      label: "Like",
+      count: blog.likes.length,
+      icon: <IconHeart className='' />,
+      onClick: handleLikeBlog,
+      hoverColor: "hover:text-blue-500"
+    },
+    {
+      label: "Comment",
+      count: blog.comments.length,
+      icon: <IconMessageDots />,
+      onClick: () => setShowComments(prev => !prev),
+      hoverColor: "hover:text-green-500"
+    },
+    {
+      label: "Share",
+      count: blog.shareCount,
+      icon: <IconShare />,
+      onClick: open,
+      hoverColor: "hover:text-purple-500"
+    }
+  ]
+
+  useEffect(() => {
+    setIsLiked(blog?.likes?.some(item => item.likerId === user.id) ?? false);
+  }, []);
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8">
@@ -85,24 +147,23 @@ export default function ViewBlog({ blog }: { blog: IBlog }) {
       </div>
 
       <div className="max-w-full md:max-w-[35rem] mx-auto flex items-center justify-around mt-8 p-4 border-t border-b border-gray-200">
-        <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500" onClick={handleLikeBlog}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-          </svg>
+        <button
+          className={`flex items-center space-x-2 text-gray-600 hover:text-primary cursor-pointer`}
+          onClick={handleLikeBlog}>
+          {
+            isLiked ? <IconHeartFilled className='text-primary' /> : <IconHeart className='' />
+          }
           <span>Like ({blog.likes.length})</span>
         </button>
-        <button className="flex items-center space-x-2 text-gray-600 hover:text-green-500" onClick={() => setShowComments(!showComments)}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-          <span>Comment ({blog.comments.length})</span>
-        </button>
-        <button className="flex items-center space-x-2 text-gray-600 hover:text-purple-500">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-          </svg>
-          <span>Share ({blog.shares.length})</span>
-        </button>
+        {blogActions.slice(1, 3).map((action, index) => (
+          <button
+            key={index}
+            className={`flex items-center space-x-2 text-gray-600 ${action.hoverColor} cursor-pointer`}
+            onClick={action.onClick}>
+            {action.icon}
+            <span>{action.label} ({action.count})</span>
+          </button>
+        ))}
       </div>
 
       {showComments && (
@@ -116,13 +177,11 @@ export default function ViewBlog({ blog }: { blog: IBlog }) {
                 rows={3}
                 placeholder="Write your comment..."
                 value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-              ></textarea>
+                onChange={(e) => setCommentText(e.target.value)} />
               <Button
                 className="mt-2"
                 onClick={handlePostComment}
-                loading={commentLoading}
-              >
+                loading={commentLoading}>
                 Post Comment
               </Button>
             </div>
@@ -151,6 +210,18 @@ export default function ViewBlog({ blog }: { blog: IBlog }) {
         </div>
       )}
 
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Share Blog"
+        centered>
+        <div className="flex flex-col gap-4">
+          <div className='w-full h-10 rounded flex items-center justify-between pl-3 border border-gray-300'>
+            <p>{window.location.href}</p>
+            <Button onClick={handleShareBlog}>Copy Link</Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }

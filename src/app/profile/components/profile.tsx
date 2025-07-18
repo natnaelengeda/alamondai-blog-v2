@@ -176,10 +176,10 @@ export default function Profile() {
       </div>
       <div
 
-        className="flex-1 p-6 overflow-auto">
+        className="flex-1 px-3 py-3 md:p-6 overflow-auto">
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Profile Section */}
-          <div className="flex items-start gap-6">
+          <div className="w-full flex flex-col md:flex-row items-center md:items-start gap-6">
             {/* Profile Image */}
             <div
               className="relative items-center justify-center flex-shrink-0 w-24 h-24 overflow-hidden bg-gray-200 rounded-full">
@@ -218,7 +218,7 @@ export default function Profile() {
             </div>
 
             {/* Profile Form */}
-            <div className="grid flex-1 grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="grid flex-1 grid-cols-2 gap-6 md:grid-cols-2">
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-700">Full Name</label>
                 <TextInput

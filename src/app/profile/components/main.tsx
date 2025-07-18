@@ -11,7 +11,7 @@ export default function Main() {
   const [activeTab, setActiveTab] = useState("profile");
 
   return (
-    <div className="flex w-full h-full min-h-[calc(100vh-10rem)] bg-gray-50">
+    <div className="flex flex-col md:flex-row w-full h-full min-h-[calc(100vh-10rem)] bg-gray-50">
       {/* Sidebar */}
       <Sidebar
         activeTab={activeTab}
