@@ -5,13 +5,13 @@ import { useForm } from '@mantine/form';
 import { Button, PasswordInput, Text, TextInput, Loader } from '@mantine/core';
 
 // Firebase
-import { auth, firestore } from '@/lib/firebase';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { showLoginError } from '@/lib/ui';
-import { addDoc, collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
 // State
 import { useDispatch } from 'react-redux';
+import { addId, addInfo, login } from '@/state/user';
 
 // Toast
 import { toast } from "react-hot-toast";
@@ -21,8 +21,6 @@ import axios from "@/utils/axios";
 
 // Icons
 import { MdArrowBackIos } from 'react-icons/md';
-import { addTempUser } from '@/state/temp-user';
-import { addInfo, login } from '@/state/user';
 
 interface Input {
   fullName: string;
@@ -81,6 +79,7 @@ export default function SignUpwithEmail({ setStep }: ISignIn) {
       }).then(async (response) => {
         const status = response.status;
         const msg = response.data.msg;
+        const userId = response.data.userId;
 
         if (status == 200) {
           const data = response.data;
@@ -104,6 +103,10 @@ export default function SignUpwithEmail({ setStep }: ISignIn) {
               username: value.username,
               avatarUrl: "",
             }));
+
+            dispatch(addId({
+              id: userId
+            }))
 
             setStep("verify-email");
           } else {

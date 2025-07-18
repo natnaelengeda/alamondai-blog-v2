@@ -1,21 +1,28 @@
 "use client";
-
-import React, { Dispatch, SetStateAction } from 'react'
-import Link from 'next/link';
-import toast from 'react-hot-toast';
-import Image from 'next/image';
-import { Button, Text } from '@mantine/core'
+import React from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
 
+// Mantine
+import { Button, Text } from '@mantine/core'
+
+// Axios
+import axios from "@/utils/axios";
+import toast from 'react-hot-toast';
+
+// Firebase
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-import axios from "@/utils/axios";
+// State
+import { useDispatch } from 'react-redux';
+import { addId, addInfo, login } from '@/state/user';
+
+// AppAsset
 import AppAsset from '@/core/AppAsset';
 
 // Icons
 import { MdOutlineMail } from "react-icons/md";
-import { useDispatch } from 'react-redux';
-import { addInfo, login } from '@/state/user';
 
 interface ISignIn {
   setStep: any;
@@ -67,17 +74,24 @@ export default function SignIn({ setStep }: ISignIn) {
             username: loggedInUser.username,
             avatarUrl: profileImage
           }));
+
+          dispatch(addId({
+            id: loggedInUser.id,
+          }));
+
         } else if (data.msg == "signup") {
           dispatch(addInfo({
             name: name ?? "",
             email: email ?? "",
             username: "",
             avatarUrl: photoUrl ?? "",
-          }))
+          }));
+
+          dispatch(addId({
+            id: data.userId
+          }));
         }
-
       }
-
     }).catch((error) => {
       toast.error("Unable to Login");
     });

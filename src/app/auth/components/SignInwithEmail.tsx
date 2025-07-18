@@ -8,7 +8,7 @@ import { Button, PasswordInput, Text, TextInput, Loader } from '@mantine/core';
 
 // State
 import { useDispatch } from 'react-redux';
-import { addInfo, login } from '@/state/user';
+import { addId, addInfo, login } from '@/state/user';
 
 // Axios
 import axios from "@/utils/axios";
@@ -24,6 +24,7 @@ import { auth } from '@/lib/firebase';
 
 
 type IUser = {
+  id: number;
   email: string;
   name: string;
   username: string;
@@ -63,8 +64,6 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
       signInWithEmailAndPassword(auth, value.email, value.password)
         .then(async (userCredential) => {
           const user = userCredential.user;
-          // Get the ID token
-          const idToken = await user.getIdToken();
 
           dispatch(login({
             isLoggedIn: true
@@ -75,11 +74,14 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
 
           axios.post("/user/login", {
             email: value.email,
-            token: idToken
           }).then((response) => {
             const status = response.status;
             if (status == 200) {
               const data: IUser = response.data;
+
+              dispatch(addId({
+                id: data.id,
+              }));
 
               dispatch(addInfo({
                 name: data.name,

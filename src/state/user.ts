@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface UserState {
+  id: number | null;
   name: string;
   bio: string | null;
   email: string;
@@ -13,6 +14,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
+  id: null,
   name: "",
   bio: "",
   email: "",
@@ -29,6 +31,9 @@ export const userSlice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<{ isLoggedIn: boolean }>) => {
       state.isLoggedIn = action.payload.isLoggedIn;
+    },
+    addId: (state, action: PayloadAction<{ id: number }>) => {
+      state.id = action.payload.id;
     },
     addInfo: (state, action: PayloadAction<{ name: string, email: string, username: string, avatarUrl: string }>) => {
       state.name = action.payload.name;
@@ -55,6 +60,6 @@ export const userSlice = createSlice({
   }
 })
 
-export const { login, logout, addInfo, updateProfileImage, updateNameUserName } = userSlice.actions;
+export const { login, logout, addInfo, updateProfileImage, updateNameUserName, addId } = userSlice.actions;
 export const selectUser = (state: { user: UserState }) => state.user;
 export default userSlice.reducer;

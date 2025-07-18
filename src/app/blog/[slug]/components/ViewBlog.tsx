@@ -1,19 +1,58 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Button } from '@mantine/core';
 
 import DOMPurify from 'dompurify';  // Optional but HIGHLY recommended for safety
 import AppAsset from '@/core/AppAsset';
+import axios from '@/utils/axios';
 
 // Types
 import { IBlog } from '@/types/blog'
 import { UserState } from '@/state/user';
+import toast from 'react-hot-toast';
 
 export default function ViewBlog({ blog }: { blog: IBlog }) {
   const [showComments, setShowComments] = useState(false);
+  const [commentLoading, setCommentLoading] = useState(false);
+  const [commentText, setCommentText] = useState('');
   const user = useSelector((state: { user: UserState }) => state.user);
 
   const sanitizedContent = DOMPurify.sanitize(blog.content);
+
+  const handlePostComment = async () => {
+    setCommentLoading(true);
+    try {
+      axios.post('/blog/add-comment', { blogId: blog.id, content: commentText })
+        .then((response) => {
+          const status = response.status;
+          if (status == 200) {
+            toast.success("Comment Added Successfully");
+          }
+        })
+      setCommentText(''); // Clear the textarea
+    } catch (error) {
+      console.error('Error posting comment:', error);
+      alert('Failed to post comment.');
+    } finally {
+      setCommentLoading(false);
+    }
+  };
+
+  const handleLikeBlog = async () => {
+    try {
+      axios.post('/blog/like-blog', { blogId: blog.id })
+        .then((response) => {
+          console.log(response)
+        }).catch((error) => {
+
+        });
+
+    } catch (error) {
+      console.error('Error liking blog:', error);
+      alert('Failed to like blog.');
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8">
@@ -46,23 +85,23 @@ export default function ViewBlog({ blog }: { blog: IBlog }) {
       </div>
 
       <div className="max-w-full md:max-w-[35rem] mx-auto flex items-center justify-around mt-8 p-4 border-t border-b border-gray-200">
-        <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500">
+        <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500" onClick={handleLikeBlog}>
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
-          <span>Like</span>
+          <span>Like ({blog.likes.length})</span>
         </button>
         <button className="flex items-center space-x-2 text-gray-600 hover:text-green-500" onClick={() => setShowComments(!showComments)}>
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
           </svg>
-          <span>Comment</span>
+          <span>Comment ({blog.comments.length})</span>
         </button>
         <button className="flex items-center space-x-2 text-gray-600 hover:text-purple-500">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
           </svg>
-          <span>Share</span>
+          <span>Share ({blog.shares.length})</span>
         </button>
       </div>
 
@@ -76,10 +115,16 @@ export default function ViewBlog({ blog }: { blog: IBlog }) {
                 className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 rows={3}
                 placeholder="Write your comment..."
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
               ></textarea>
-              <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <Button
+                className="mt-2"
+                onClick={handlePostComment}
+                loading={commentLoading}
+              >
                 Post Comment
-              </button>
+              </Button>
             </div>
           ) : (
             <div className="bg-gray-100 p-4 rounded-lg">
@@ -88,7 +133,20 @@ export default function ViewBlog({ blog }: { blog: IBlog }) {
           )}
           <div className="mt-4">
             {/* Existing comments will be listed here */}
-            <p className="text-gray-700">No comments yet. Be the first to comment!</p>
+            {blog.comments && blog.comments.length > 0 ? (
+              <div>
+                {blog.comments.map((comment) => (
+                  <div key={comment.id} className="border-b border-gray-200 py-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <p className="text-gray-800">{comment.content}</p>
+                      <p className="text-sm text-gray-500">{new Date(comment.createdAt).toLocaleDateString('en-GB')}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-700">No comments yet. Be the first to comment!</p>
+            )}
           </div>
         </div>
       )}
