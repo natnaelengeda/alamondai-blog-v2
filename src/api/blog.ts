@@ -62,3 +62,9 @@ export const deleteBlogById = async ({ id }: { id: number }) => {
   const response = await axios.delete(`/blog/${id}`);
   return response;
 }
+
+export async function getBlogBySlug(slug: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/get-by-slug/${slug}`)
+  if (!res.ok) throw new Error("Failed to fetch blog")
+  return res.json()
+}

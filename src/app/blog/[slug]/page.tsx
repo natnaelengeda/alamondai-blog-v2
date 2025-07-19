@@ -1,59 +1,59 @@
-"use client";
-
 import React from 'react'
-import Head from 'next/head';
-import { useParams } from 'next/navigation';
 
-// Components
-import ViewBlog from './components/ViewBlog';
-import BlogDetailSkeleton from './components/BlogDetailSkeleton';
+// components
+import LoadBlog from './components/LoadBlog';
 
-// Hooks
-import { useScrollToTop } from '@/lib/useScrollToTop';
+// api
+import { getBlogBySlug } from '@/api/blog';
 
-// Api
-import { useBlog } from '@/api/blog';
-import { Metadata } from 'next';
+// types
+import { IBlog } from '@/types/blog';
 
+export async function generateMetadata({ params }: any) {
+  const slug = params.slug;
+  const blog: IBlog = await getBlogBySlug(slug);
 
-export default function Slug() {
-  const { slug } = useParams();
+  console.log(blog)
+  const url = process.env.NODE_ENV == "development" ?
+    `http://localhost:3000/blog/${slug}` :
+    `https://blog.alamondai.com/blog/${slug}`
 
-  const { data, isLoading, error } = useBlog(slug.toString());
+  const imageUrl =
+    blog.cover_image_url ?
+      `${process.env.NEXT_PUBLIC_API_URL}/blog/image/${blog.cover_image_url.id}` :
+      `https://blog.alamondai.com/seo-image.png`;
 
-  useScrollToTop();
-
-  if (isLoading) {
-    return <BlogDetailSkeleton />
+  return {
+    title: blog.title,
+    description: blog.excerpt,
+    icons: {
+      icon: '/logo.png',
+    },
+    openGraph: {
+      title: blog.title,
+      description: blog.excerpt,
+      type: 'article',
+      url: url,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: blog.title,
+      description: blog.excerpt,
+      images: imageUrl,
+    },
   };
+}
 
-  if (error) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <p className="text-red-500 font-bold text-lg">Error loading blog post.</p>
-      </div>
-    );
-  }
-
-  if (!data) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <p className="text-red-gray-500 font-bold text-lg">Blog post not found.</p>
-      </div>
-    );
-  };
-
+export default function Slug({ params }: any) {
+  const slug = params.slug;
   return (
-    <>
-      <Head>
-        <title>
-          Natnael Engeda Worku
-        </title>
-        <meta property="og:title" content="Natnael Engeda" />
-        <meta property="og:description" content="Natnael Engeda's Blog to Success" />
-        <meta property="og:type" content="article" />
-      </Head>
-      <ViewBlog blog={data} />
-    </>
+    <LoadBlog slug={slug} />
   )
 }
