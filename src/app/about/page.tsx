@@ -73,7 +73,7 @@ export default function Page() {
               Born from a love of <span className="font-medium text-black">clean code</span>,{" "}
               <span className="font-medium black">clear writing</span>, and{" "}
               <span className="font-medium black">critical thinking</span>, Alamondai Blog exists to inspire and
-              challenge anyone navigating the fast-moving digital world, whether you're a curious student, a seasoned
+              challenge anyone navigating the fast-moving digital world, whether {`you're`} a curious student, a seasoned
               engineer, or someone simply seeking clarity in complexity.
             </p>
           </div>
@@ -83,7 +83,7 @@ export default function Page() {
         <div className="mb-12">
           <h2 className="flex items-center gap-3 mb-6 text-2xl font-bold">
             <span className="text-2xl">🎯</span>
-            What You'll Find Here
+            What {`You'll`} Find Here
           </h2>
 
           <p className="mb-6 text-black">At Alamondai Blog, we publish content that sits at the intersection of:</p>
@@ -128,7 +128,7 @@ export default function Page() {
         <div className="mb-12">
           <h2 className="flex items-center gap-3 mb-6 text-2xl font-bold">
             <span className="text-2xl">👤</span>
-            Who's Behind It?
+            {`Who's`} Behind It?
           </h2>
 
           <div className="space-y-4 leading-relaxed text-black">
@@ -162,12 +162,12 @@ export default function Page() {
         <div className="mb-12">
           <h2 className="flex items-center gap-3 mb-6 text-2xl font-bold">
             <span className="text-2xl">💛</span>
-            Why "Alamondai"?
+            {` Why "Alamondai"?`}
           </h2>
 
           <div className="leading-relaxed text-black">
             <p>
-              "Alamondai" is a made-up word, a fusion of sound and intention. It doesn't mean anything in a dictionary,
+              {`"Alamondai"`} is a made-up word, a fusion of sound and intention. It {`doesn't`} mean anything in a dictionary,
               but it means everything here: a space to <span className="font-medium text-black">think freely</span>,{" "}
               <span className="font-medium text-black">build intentionally</span>, and{" "}
               <span className="font-medium text-black">write like it matters</span>.

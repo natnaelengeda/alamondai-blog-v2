@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: any) {
 
   const imageUrl =
     blog.cover_image_url ?
-      `${process.env.NEXT_PUBLIC_API_URL}/blog/image/${blog.cover_image_url.id}` :
+      `${process.env.NEXT_PUBLIC_API_URL}/blog/open-graph-generate/${blog.cover_image_url.id}` :
       `https://blog.alamondai.com/seo-image.png`;
 
   return {

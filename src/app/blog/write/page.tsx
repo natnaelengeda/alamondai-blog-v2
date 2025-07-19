@@ -18,8 +18,10 @@ import Form from './components/Form';
 
 import imageCompression from "browser-image-compression";
 import { auth } from '@/lib/firebase';
+// import CustomQuill from './components/CustomQuill';
 
-const Editor = dynamic(() => import("./components/Editor"), { ssr: false });
+// const Editor = dynamic(() => import("./components/Editor"), { ssr: false });
+const CustomQuill = dynamic(() => import("./components/CustomQuill"), { ssr: false });
 
 const initialContent = `
   <h1 style="color: #999;">Header 1</h1>
@@ -193,7 +195,10 @@ export default function Page() {
           isCompressingImage={isCompressingImage}
           handleFileSelect={handleFileSelect}
           removeImage={removeImage} />
-        <Editor
+        {/* <Editor
+          content={content}
+          setContent={setContent} /> */}
+        <CustomQuill
           content={content}
           setContent={setContent} />
 
