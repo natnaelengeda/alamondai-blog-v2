@@ -63,17 +63,17 @@ export default function Page() {
 
           <div className="space-y-6 leading-relaxed text-black">
             <p>
-              Alamondai Blog is a digital publication built for creators, thinkers, and developers who care deeply about the{" "}
-              <span className="font-medium text-black">craft of technology</span>, the{" "}
-              <span className="font-medium text-black">future of ideas</span>, and the{" "}
+              Alamondai Blog is a digital publication built for creators, thinkers, and developers who care deeply about the{' '}
+              <span className="font-medium text-black">craft of technology</span>, the{' '}
+              <span className="font-medium text-black">future of ideas</span>, and the{' '}
               <span className="font-medium text-black">beauty of well-told stories</span>.
             </p>
 
             <p>
-              Born from a love of <span className="font-medium text-black">clean code</span>,{" "}
-              <span className="font-medium black">clear writing</span>, and{" "}
-              <span className="font-medium black">critical thinking</span>, Alamondai Blog exists to inspire and
-              challenge anyone navigating the fast-moving digital world, whether {`you're`} a curious student, a seasoned
+              Born from a love of <span className="font-medium text-black">clean code</span>,{' '}
+              <span className="font-medium text-black">clear writing</span>, and{' '}
+              <span className="font-medium text-black">critical thinking</span>, Alamondai Blog exists to inspire and
+              challenge anyone navigating the fast-moving digital world, whether you&apos;re a curious student, a seasoned
               engineer, or someone simply seeking clarity in complexity.
             </p>
           </div>
@@ -83,7 +83,7 @@ export default function Page() {
         <div className="mb-12">
           <h2 className="flex items-center gap-3 mb-6 text-2xl font-bold">
             <span className="text-2xl">🎯</span>
-            What {`You'll`} Find Here
+            What You&apos;ll Find Here
           </h2>
 
           <p className="mb-6 text-black">At Alamondai Blog, we publish content that sits at the intersection of:</p>
@@ -94,8 +94,8 @@ export default function Page() {
               <div>
                 <span className="font-medium text-black">Software Engineering</span>
                 <span className="text-black">
-                  {" "}
-                  {`->`} Practical guides, mental models, and architecture insights for devs who want to think bigger.
+                  {' '}
+                  → Practical guides, mental models, and architecture insights for devs who want to think bigger.
                 </span>
               </div>
             </li>
@@ -105,8 +105,8 @@ export default function Page() {
               <div>
                 <span className="font-medium text-black">Tech Philosophy</span>
                 <span className="text-black">
-                  {" "}
-                  {`->`}  Essays exploring the human side of programming, tech ethics, and the cost of speed.
+                  {' '}
+                  → Essays exploring the human side of programming, tech ethics, and the cost of speed.
                 </span>
               </div>
             </li>
@@ -116,8 +116,8 @@ export default function Page() {
               <div>
                 <span className="font-medium text-black">Tools & Trends</span>
                 <span className="text-black">
-                  {" "}
-                  {`->`}  Deep dives into new frameworks, productivity tools, and developer-first startups.
+                  {' '}
+                  → Deep dives into new frameworks, productivity tools, and developer-first startups.
                 </span>
               </div>
             </li>
@@ -128,27 +128,29 @@ export default function Page() {
         <div className="mb-12">
           <h2 className="flex items-center gap-3 mb-6 text-2xl font-bold">
             <span className="text-2xl">👤</span>
-            {`Who's`} Behind It?
+            Who&apos;s Behind It?
           </h2>
 
           <div className="space-y-4 leading-relaxed text-black">
             <p>
-              I'm <span className="font-medium text-black">Natnael Engeda</span>, a software developer, writer, and
-              problem-solver. I created Alamondai as a space to share the ideas I wish existed when I was starting  and
+              I&apos;m <span className="font-medium text-black">Natnael Engeda</span>, a software developer, writer, and
+              problem-solver. I created Alamondai as a space to share the ideas I wish existed when I was starting and
               the questions I keep asking today.
             </p>
 
             <p>
-              You can learn more about me at{" "}
+              You can learn more about me at{' '}
               <a
                 target="_blank"
+                rel="noopener noreferrer"
                 href="https://natnaelengeda.tech"
                 className="text-blue-500 transition-colors hover:text-blue-800">
                 natnaelengeda.tech
               </a>
-              , or connect on{" "}
+              , or connect on{' '}
               <a
                 target="_blank"
+                rel="noopener noreferrer"
                 href="https://www.linkedin.com/in/natnaelengeda/"
                 className="text-blue-500 transition-colors hover:text-blue-800">
                 LinkedIn
@@ -162,14 +164,14 @@ export default function Page() {
         <div className="mb-12">
           <h2 className="flex items-center gap-3 mb-6 text-2xl font-bold">
             <span className="text-2xl">💛</span>
-            {` Why "Alamondai"?`}
+            {' Why "Alamondai"?'}
           </h2>
 
           <div className="leading-relaxed text-black">
             <p>
-              {`"Alamondai"`} is a made-up word, a fusion of sound and intention. It {`doesn't`} mean anything in a dictionary,
-              but it means everything here: a space to <span className="font-medium text-black">think freely</span>,{" "}
-              <span className="font-medium text-black">build intentionally</span>, and{" "}
+              {'"Alamondai"'} is a made-up word, a fusion of sound and intention. It {'doesn\'t'} mean anything in a dictionary,
+              but it means everything here: a space to <span className="font-medium text-black">think freely</span>,{' '}
+              <span className="font-medium text-black">build intentionally</span>, and{' '}
               <span className="font-medium text-black">write like it matters</span>.
             </p>
           </div>
@@ -184,7 +186,7 @@ export default function Page() {
 
           <div className="leading-relaxed text-black">
             <p>
-              If you enjoy the content, consider subscribing to the [Alamondai Newsletter] — no spam, just thoughtful
+              If you enjoy the content, consider subscribing to the Alamondai Newsletter — no spam, just thoughtful
               ideas and new posts delivered occasionally.
             </p>
           </div>
@@ -197,32 +199,31 @@ export default function Page() {
               Subscribe to Newsletter
             </Button>
 
-            {
-              showEmail && (
-                <div className='flex flex-row items-center justify-start w-full gap-2'>
-                  <TextInput
-                    className="mt-4"
-                    placeholder="Enter your email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required />
-                  <Button
-                    className="mt-4"
-                    variant="filled"
-                    color="blue"
-                    onClick={handleNewsletterSubmit}
-                    disabled={isSubmitting}
-                    loading={isSubmitting}>
-                    Subscribe
-                  </Button>
-                </div>
-              )
-
-            }
+            {showEmail && (
+              <div className="flex flex-row items-center justify-start w-full gap-2">
+                <TextInput
+                  className="mt-4"
+                  placeholder="Enter your email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <Button
+                  className="mt-4"
+                  variant="filled"
+                  color="blue"
+                  onClick={handleNewsletterSubmit}
+                  disabled={isSubmitting}
+                  loading={isSubmitting}>
+                  Subscribe
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
+
   )
 }

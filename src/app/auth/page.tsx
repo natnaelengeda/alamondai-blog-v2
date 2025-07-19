@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 
 // Comnponents
 import SignIn from './components/SignIn';
-import VerifyOtp from './components/verifyotp';
 import SignInwithEmail from './components/SignInwithEmail';
 import SignUpwithEmail from './components/SignUpwithEmail';
 
@@ -39,8 +38,7 @@ export default function Auth() {
               <SignInwithEmail setStep={setStep} /> :
               step == "sign-up-with-email" ?
                 <SignUpwithEmail setStep={setStep} /> :
-                step == "verify-email" ?
-                  <VerifyOtp setStep={setStep} /> : null
+                null
         }
       </div>
     </div>

@@ -38,7 +38,6 @@ export default function SignIn({ setStep }: ISignIn) {
     const result = await signInWithPopup(auth, provider);
 
     const user = result.user;
-    const idToken = await user.getIdToken();
 
     const uid = user.uid;
     const name = user.displayName;

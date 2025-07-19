@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
 
 import { useForm } from '@mantine/form';
@@ -63,7 +63,6 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
     try {
       signInWithEmailAndPassword(auth, value.email, value.password)
         .then(async (userCredential) => {
-          const user = userCredential.user;
 
           dispatch(login({
             isLoggedIn: true

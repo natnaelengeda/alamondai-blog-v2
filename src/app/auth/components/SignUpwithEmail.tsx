@@ -37,7 +37,6 @@ export default function SignUpwithEmail({ setStep }: ISignIn) {
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [userNameTaken, setUserNameTaken] = useState(false);
 
   const form = useForm({
     mode: "uncontrolled",
@@ -82,7 +81,6 @@ export default function SignUpwithEmail({ setStep }: ISignIn) {
         const userId = response.data.userId;
 
         if (status == 200) {
-          const data = response.data;
 
           const userCredential = await createUserWithEmailAndPassword(auth, value.email, value.password);
           if (userCredential && userCredential.user) {
