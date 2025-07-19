@@ -97,7 +97,7 @@ export default function Page() {
         };
 
         // Send binary data
-        const response = await fetch(`https://api.alamondaii.com/blog/upload/blog-image`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/upload/blog-image`, {
           method: 'POST',
           headers,
           body: arrayBuffer

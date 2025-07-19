@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react'
+import Head from 'next/head';
 import { useParams } from 'next/navigation';
 
 // Components
@@ -12,6 +13,7 @@ import { useScrollToTop } from '@/lib/useScrollToTop';
 
 // Api
 import { useBlog } from '@/api/blog';
+import { Metadata } from 'next';
 
 
 export default function Slug() {
@@ -42,6 +44,16 @@ export default function Slug() {
   };
 
   return (
-    <ViewBlog blog={data} />
+    <>
+      <Head>
+        <title>
+          Natnael Engeda Worku
+        </title>
+        <meta property="og:title" content="Natnael Engeda" />
+        <meta property="og:description" content="Natnael Engeda's Blog to Success" />
+        <meta property="og:type" content="article" />
+      </Head>
+      <ViewBlog blog={data} />
+    </>
   )
 }
