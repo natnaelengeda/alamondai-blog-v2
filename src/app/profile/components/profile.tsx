@@ -119,13 +119,13 @@ export default function Profile() {
       setAvatarColor(avatColor);
 
       const initialValues = {
-        fullName: data.fullName,
-        email: data.email,
-        username: data.username,
-        bio: data.bio,
-        twitterUsername: data.twitterUsername,
-        mobileNumber: data.mobileNumber,
-        createdAt: data.createdAt
+        fullName: data.fullName ?? "",
+        email: data.email ?? "",
+        username: data.username ?? "",
+        bio: data.bio ?? "",
+        twitterUsername: data.twitterUsername ?? "",
+        mobileNumber: data.mobileNumber ?? "",
+        createdAt: data.createdAt ?? ""
       };
 
       form.setValues(initialValues);
@@ -140,7 +140,7 @@ export default function Profile() {
       }
 
     }
-  }, [data, dispatch, user.avatarUrl, form]);
+  }, [data, dispatch, user.avatarUrl]);
 
   if (isPending) {
     return (
@@ -205,7 +205,7 @@ export default function Profile() {
               }
               <div
                 style={{
-                  backgroundColor: 'rgba(0, 0, 0, 0.5);' /* black with 50% opacity */
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)' /* black with 50% opacity */
                 }}
                 className='absolute top-0 left-0 flex items-center justify-center w-full h-full'>
                 <div

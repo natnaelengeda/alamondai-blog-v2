@@ -16,7 +16,7 @@ import { IBlog } from '@/types/blog'
 import { UserState } from '@/state/user';
 
 // Icons
-import { IconHeart, IconHeartFilled, IconMessageDots, IconShare } from '@tabler/icons-react';
+import { IconHeart, IconHeartFilled, IconMessageDots, IconShare, IconArrowRight, IconArrowLeft } from '@tabler/icons-react';
 
 interface ILikeCommentShare {
   blog: IBlog;
@@ -30,6 +30,8 @@ export default function LikeCommentShare({ blog, isLiked, setIsLiked, user, open
   const [showComments, setShowComments] = useState(false);
   const [commentLoading, setCommentLoading] = useState(false);
   const [commentText, setCommentText] = useState('');
+  const [currentPage, setCurrentPage] = useState(0); // New state for pagination
+  const commentsPerPage = 5; // Number of comments per page
 
   const queryClient = useQueryClient();
 
@@ -97,6 +99,56 @@ export default function LikeCommentShare({ blog, isLiked, setIsLiked, user, open
     }
   ]
 
+  // Pagination logic
+  const startIndex = currentPage * commentsPerPage;
+  const endIndex = startIndex + commentsPerPage;
+  const displayedComments = blog.comments ? blog.comments.slice(startIndex, endIndex) : [];
+  const totalPages = blog.comments ? Math.ceil(blog.comments.length / commentsPerPage) : 0;
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPagesToShow = 7;
+
+    if (totalPages <= maxPagesToShow) {
+      for (let i = 0; i < totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      // Always show first page
+      pageNumbers.push(0);
+
+      // Determine start and end of the middle section
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages - 2, currentPage + 2);
+
+      if (currentPage < 3) {
+        endPage = 4;
+      } else if (currentPage >= totalPages - 3) {
+        startPage = totalPages - 5;
+      }
+
+      // Add '...' if needed after the first page
+      if (startPage > 1) {
+        pageNumbers.push(-1); // Sentinel for '...'
+      }
+
+      // Add middle pages
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+
+      // Add '...' if needed before the last page
+      if (endPage < totalPages - 2) {
+        pageNumbers.push(-1); // Sentinel for '...'
+      }
+
+      // Always show last page
+      pageNumbers.push(totalPages - 1);
+    }
+
+    return pageNumbers;
+  };
+
   return (
     <>
       <div className="max-w-full md:max-w-[35rem] mx-auto flex items-center justify-around mt-8 p-4 border-t border-b border-gray-200">
@@ -121,7 +173,7 @@ export default function LikeCommentShare({ blog, isLiked, setIsLiked, user, open
 
       {showComments && (
         <div className="max-w-full md:max-w-[35rem] mx-auto mt-8 p-4 border-t border-gray-200">
-          <h2 className="text-xl font-bold mb-4">Comments</h2>
+          <h2 className="mb-4 text-xl font-bold">Comments</h2>
           {/* Placeholder for comments list */}
           {user.isLoggedIn ? (
             <div className="mt-4">
@@ -139,7 +191,7 @@ export default function LikeCommentShare({ blog, isLiked, setIsLiked, user, open
               </Button>
             </div>
           ) : (
-            <div className="bg-gray-100 p-4 rounded-lg">
+            <div className="p-4 bg-gray-100 rounded-lg">
               <p className="text-gray-700">Please log in to leave a comment.</p>
             </div>
           )}
@@ -147,14 +199,49 @@ export default function LikeCommentShare({ blog, isLiked, setIsLiked, user, open
             {/* Existing comments will be listed here */}
             {blog.comments && blog.comments.length > 0 ? (
               <div>
-                {blog.comments.map((comment) => (
-                  <div key={comment.id} className="border-b border-gray-200 py-4">
-                    <div className="flex justify-between items-center mb-2">
+                {displayedComments.map((comment) => (
+                  <div key={comment.id} className="py-4 border-b border-gray-200">
+                    <div className="flex items-center justify-between mb-2">
                       <p className="text-gray-800">{comment.content}</p>
                       <p className="text-sm text-gray-500">{new Date(comment.createdAt).toLocaleDateString('en-GB')}</p>
                     </div>
                   </div>
                 ))}
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-between mt-4 space-x-2">
+                    <Button
+                      radius="xl"
+                      onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+                      disabled={currentPage === 0}
+                    >
+                      <IconArrowLeft />
+                    </Button>
+                    <div className='flex items-center justify-center w-full gap-2'>
+                      {getPageNumbers().map((pageNumber, index) => (
+                        pageNumber === -1 ? (
+                          <span key={index} className="px-2 py-1">...</span>
+                        ) : (
+                          <Button
+                            key={pageNumber}
+                            radius="xl"
+                            size="sm"
+                            onClick={() => setCurrentPage(pageNumber)}
+                            variant={currentPage === pageNumber ? 'filled' : 'outline'}
+                          >
+                            {pageNumber + 1}
+                          </Button>
+                        )
+                      ))}
+                    </div>
+                    <Button
+                      radius="xl"
+                      onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
+                      disabled={currentPage === totalPages - 1}>
+                      <IconArrowRight />
+                    </Button>
+                  </div>
+                )}
               </div>
             ) : (
               <p className="text-gray-700">No comments yet. Be the first to comment!</p>

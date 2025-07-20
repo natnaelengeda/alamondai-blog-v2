@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import SignIn from './components/SignIn';
 import SignInwithEmail from './components/SignInwithEmail';
 import SignUpwithEmail from './components/SignUpwithEmail';
+import VerifyEmail from './components/VerifyEmail';
 
 export default function Auth() {
   const [step, setStep] = useState<string>("signin");
@@ -13,7 +14,7 @@ export default function Auth() {
   return (
     <div
       style={{
-        backgroundImage: "url('/auth-background.jpg')",
+        backgroundImage: "url('/auth-background.svg')",
         backgroundSize: "cover",
         backgroundPosition: "center"
       }}
@@ -21,7 +22,7 @@ export default function Auth() {
 
       {/* Background Overlay */}
       <div
-        className='w-full h-full absolute top-0 left-0'
+        className='absolute top-0 left-0 w-full h-full'
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.4)", // You can adjust the last value (0.5) to change opacity
           zIndex: 1,
@@ -38,7 +39,9 @@ export default function Auth() {
               <SignInwithEmail setStep={setStep} /> :
               step == "sign-up-with-email" ?
                 <SignUpwithEmail setStep={setStep} /> :
-                null
+                step == "verify-email" ?
+                  <VerifyEmail setStep={setStep} /> : null
+
         }
       </div>
     </div>

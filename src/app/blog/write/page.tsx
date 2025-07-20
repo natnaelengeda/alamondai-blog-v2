@@ -182,7 +182,7 @@ export default function Page() {
   }
 
   return (
-    <div className='container w-full h-full pt-10 mx-auto'>
+    <div className='container w-full h-full pt-10 mx-auto px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] '>
       <div className='flex flex-col items-start justify-start w-full h-full gap-5 px-4 mx:px-0'>
         <Form
           title={title}

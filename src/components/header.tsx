@@ -20,7 +20,7 @@ export default function Header() {
 
   return (
     <header
-      className='w-full h-20 border-b border-gray-200  px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] mx-auto bg-white z-50'>
+      className='w-full h-20 border-b border-gray-200 px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] mx-auto bg-white z-50'>
       {/* Main Content */}
       <div className='container flex flex-row items-center justify-between w-full h-full mx-auto'>
 

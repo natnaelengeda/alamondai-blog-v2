@@ -37,6 +37,7 @@ export default function UpdateProfilePictureModal({ opened, close, avatarColor, 
     const file = event.target.files?.[0];
     if (!file) return;
 
+    setLoading(true);
     if (image?.preview) {
       URL.revokeObjectURL(image.preview);
     }
@@ -55,6 +56,7 @@ export default function UpdateProfilePictureModal({ opened, close, avatarColor, 
     };
 
     setImage(newImage);
+    setLoading(false);
   };
 
   const uploadImage = async () => {
@@ -83,11 +85,10 @@ export default function UpdateProfilePictureModal({ opened, close, avatarColor, 
 
       if (response.status == 200) {
         const data = await response.json();
-        const newUrl = `${process.env.NEXT_PUBLIC_API_URL}/user/image/${data.id}`
         setLoading(false);
         setImage(null);
         toast.success("Image Update Success");
-        dispatch(updateProfileImage({ avatarUrl: newUrl }));
+        dispatch(updateProfileImage({ avatarUrl: data.imageUrl }));
         close();
       }
 
