@@ -24,7 +24,7 @@ import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
 import { IconCameraBitcoin } from '@tabler/icons-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addInfo, updateNameUserName, updateProfileImage, UserState } from '@/state/user';
+import { updateNameUserName, updateProfileImage, UserState } from '@/state/user';
 
 export default function Profile() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -35,7 +35,7 @@ export default function Profile() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { isPending, isError, data, error } = useQuery({
+  const { isPending, data, } = useQuery({
     queryKey: ['user-profile'],
     queryFn: fetchUserProfile,
     refetchOnWindowFocus: false,
@@ -140,7 +140,7 @@ export default function Profile() {
       }
 
     }
-  }, [data]);
+  }, [data, dispatch, user.avatarUrl, form]);
 
   if (isPending) {
     return (
@@ -294,7 +294,6 @@ export default function Profile() {
       <UpdateProfilePictureModal
         opened={opened}
         close={close}
-        profileImage={data.image}
         initials={initials}
         avatarColor={avatarColor} />
     </form>

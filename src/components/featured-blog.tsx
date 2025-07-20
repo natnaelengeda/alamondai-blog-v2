@@ -60,7 +60,7 @@ export default function FeaturedBlog() {
   const [avatarColor, setAvatarColor] = useState<string>("blue");
   const [initials, setInitials] = useState<string>("");
 
-  const { isPending, isError, data, error } = useQuery({
+  const { isPending, data, } = useQuery({
     queryKey: ['featured-blog'],
     queryFn: fetchFeaturedBlog,
     staleTime: 5 * 60 * 1000, // ✅ 5 minutes fresh

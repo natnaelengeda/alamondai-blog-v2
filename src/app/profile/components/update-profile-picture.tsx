@@ -18,12 +18,11 @@ interface ImageFile {
 interface UpdateProfilePictureModalProps {
   opened: any;
   close: () => void;
-  profileImage: any;
   avatarColor: string;
   initials: string;
 }
 
-export default function UpdateProfilePictureModal({ opened, close, profileImage, avatarColor, initials }: UpdateProfilePictureModalProps) {
+export default function UpdateProfilePictureModal({ opened, close, avatarColor, initials }: UpdateProfilePictureModalProps) {
   const [image, setImage] = useState<ImageFile | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(false);
@@ -59,7 +58,7 @@ export default function UpdateProfilePictureModal({ opened, close, profileImage,
   };
 
   const uploadImage = async () => {
-    console.log("here")
+    setLoading(true);
     if (image) {
       const file = image?.file;
       const arrayBuffer = await file.arrayBuffer();
@@ -85,12 +84,14 @@ export default function UpdateProfilePictureModal({ opened, close, profileImage,
       if (response.status == 200) {
         const data = await response.json();
         const newUrl = `${process.env.NEXT_PUBLIC_API_URL}/user/image/${data.id}`
+        setLoading(false);
         setImage(null);
         toast.success("Image Update Success");
         dispatch(updateProfileImage({ avatarUrl: newUrl }));
         close();
       }
 
+      setLoading(false);
     }
   }
 

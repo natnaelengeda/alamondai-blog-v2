@@ -14,6 +14,7 @@ import { IoMdLogOut } from 'react-icons/io';
 import { MdMessage } from 'react-icons/md';
 import { FaUserCircle } from 'react-icons/fa';
 import { CiCreditCard1, CiSettings, CiUser } from 'react-icons/ci';
+import { logError } from '@/utils/logError';
 
 export default function Sidebar({ setActiveTab, activeTab }: any) {
   const logout = useLogout();
@@ -25,6 +26,7 @@ export default function Sidebar({ setActiveTab, activeTab }: any) {
       .then(() => {
         logout();
       }).catch((error) => {
+        logError('sidebar-logout', 'logout-error', 'firebase-signout', error);
         toast.error("Unable to logout, please try again later.");
       });
   }

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 import { Text } from '@mantine/core';
@@ -17,34 +17,28 @@ export default function Sign() {
 
   const id = searchParams.get("id");
 
-  const verifyUser = () => {
-    try {
-      axios.get(`/user/verify/${id}`)
-        .then((response) => {
-          const status = response.status;
-          if (status == 200) {
-            toast.success("Your account is verified");
-            setMessage("Your account is verified");
-          }
-
-          if (status == 301) {
-            toast.error("User Not Found, Please Signup");
-            setMessage("User Not Found, Please Signup");
-          }
-        }).catch((error) => {
-          toast.error("Unable to verify Account");
-          setMessage("Unable to verify Account")
-        }).finally(() => {
-          setIsLoading(false);
-        })
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const verifyUser = useCallback(() => {
+    axios.get(`/user/verify/${id}`)
+      .then((response) => {
+        const status = response.status;
+        if (status == 200) {
+          toast.success("Your account is verified");
+          setMessage("Your account is verified");
+        } else if (status == 301) {
+          toast.error("User Not Found, Please Signup");
+          setMessage("User Not Found, Please Signup");
+        }
+      }).catch(() => {
+        toast.error("Unable to verify Account");
+        setMessage("Unable to verify Account");
+      }).finally(() => {
+        setIsLoading(false);
+      });
+  }, [id]); // ✅ include only necessary deps (id)
 
   useEffect(() => {
     verifyUser();
-  }, [id]);
+  }, [verifyUser]); // ✅ safe, no loop
 
   return (
     <div

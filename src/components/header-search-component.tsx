@@ -7,6 +7,7 @@ import { Text } from '@mantine/core';
 
 // Axios
 import axios from "@/utils/axios";
+import { logError } from "@/utils/logError";
 
 // Icon
 import { IoIosSearch } from "react-icons/io";
@@ -23,7 +24,6 @@ export default function HeaderSearchComponent() {
 
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [haveSearched, setHaveSearched] = useState(false);
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -60,7 +60,6 @@ export default function HeaderSearchComponent() {
   const searchBlogs = async (searchTerm: string) => {
     try {
       setLoading(true);
-      setHaveSearched(true);
       setShowDropdown(true);
 
       const res = await axios.post("/blog/search", { query: searchTerm });
@@ -71,16 +70,16 @@ export default function HeaderSearchComponent() {
         setLoading(false);
       }
       console.log(res.data)
-    } catch (error) {
-
+    } catch (error: any) {
+      logError("component", "component", "searchBlogs", error);
     }
 
   }
 
-  function truncateText(text: string, maxLength = 50): string {
-    if (!text) return '';
-    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
-  }
+  // function truncateText(text: string, maxLength = 50): string {
+  //   if (!text) return '';
+  //   return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  // }
 
   return (
     <div>

@@ -16,6 +16,7 @@ import axios from "@/utils/axios";
 
 // Toast
 import toast from 'react-hot-toast';
+import { logError } from "@/utils/logError";
 
 // Icons
 import { MdArrowBackIos } from 'react-icons/md';
@@ -62,7 +63,7 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
     setIsLoading(true);
     try {
       signInWithEmailAndPassword(auth, value.email, value.password)
-        .then(async (userCredential) => {
+        .then(async () => {
 
           dispatch(login({
             isLoggedIn: true
@@ -91,7 +92,8 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
 
 
             }
-          }).catch((error) => {
+          }).catch((error: any) => {
+            logError("auth", "component", "SignInwithEmail", error);
             const status = error.response.status;
             if (status == 404) {
               toast.error("User Not Found, Signup Again");
@@ -126,8 +128,8 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
         }).finally(() => {
           setIsLoading(false);
         });
-    } catch (error) {
-
+    } catch (error: any) {
+      logError("auth", "component", "sumbitFunction", error);
     }
   }
 

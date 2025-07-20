@@ -23,6 +23,7 @@ import { lettersToHexColor } from '@/utils/lettersToHexColor';
 
 // Toast
 import toast from 'react-hot-toast';
+import { logError } from "@/utils/logError";
 
 export default function ProfileCircle() {
   const user = useSelector((state: { user: UserState }) => state.user);
@@ -39,7 +40,8 @@ export default function ProfileCircle() {
     signOut(auth)
       .then(() => {
         logout();
-      }).catch((error) => {
+      }).catch((error: any) => {
+        logError("component", "component", "LogoutFunction", error);
         toast.error("Unable to logout, please try again later.");
       });
   }
@@ -52,7 +54,7 @@ export default function ProfileCircle() {
       setInitials(init);
       setAvatarColor(avatColor);
     }
-  }, [user.isLoggedIn]);
+  }, [user.isLoggedIn, user.name]);
 
   return (
     <>

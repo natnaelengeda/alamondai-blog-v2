@@ -7,7 +7,7 @@ import { Button } from "@mantine/core"
 // ApAsset
 import AppAsset from "@/core/AppAsset"
 
-import { IconArrowLeft, IconHome, IconSearch } from "@tabler/icons-react"
+import { IconHome, IconSearch } from "@tabler/icons-react"
 
 export default function Page() {
   return (
@@ -30,7 +30,7 @@ export default function Page() {
           </h1>
           <h2 className="text-2xl md:text-2xl font-semibold text-slate-800">Page Not Found</h2>
           <p className="text-base text-slate-600 max-w-md mx-auto">
-            Sorry, we couldn't find the page you're looking for. The article might have been moved, deleted, or the URL
+            Sorry, we couldn&apos;t find the page you&apos;re looking for. The article might have been moved, deleted, or the URL
             might be incorrect.
           </p>
         </div>

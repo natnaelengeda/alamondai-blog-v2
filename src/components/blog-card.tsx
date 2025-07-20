@@ -39,7 +39,7 @@ export default function BlogCard({ blog, owner = false }: BlogCardProps) {
     const avatColor = lettersToHexColor(init);
     setInitials(init);
     setAvatarColor(avatColor);
-  }, []);
+  }, [blog.user.fullName]);
 
   return (
     <>
@@ -63,9 +63,11 @@ export default function BlogCard({ blog, owner = false }: BlogCardProps) {
         }
         {/* Cover image if exists */}
         {blog.cover_image_url ? (
-          <img
+          <Image
             src={`${process.env.NEXT_PUBLIC_API_URL}/blog/image/${blog.cover_image_url.id}`}
             alt={`Cover for ${blog.title}`}
+            width={240}
+            height={192}
             className="w-full h-60 md:h-48 object-cover"
             loading="lazy"
           />

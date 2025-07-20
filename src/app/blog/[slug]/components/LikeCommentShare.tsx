@@ -9,6 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 // Toast
 import toast from 'react-hot-toast';
+import { logError } from "@/utils/logError";
 
 // Types
 import { IBlog } from '@/types/blog'
@@ -44,8 +45,8 @@ export default function LikeCommentShare({ blog, isLiked, setIsLiked, user, open
           }
         })
       setCommentText(''); // Clear the textarea
-    } catch (error) {
-      console.error('Error posting comment:', error);
+    } catch (error: any) {
+      logError("blog", "component", "handlePostComment", error);
       alert('Failed to post comment.');
     } finally {
       setCommentLoading(false);
@@ -62,8 +63,8 @@ export default function LikeCommentShare({ blog, isLiked, setIsLiked, user, open
             queryClient.refetchQueries({ queryKey: ['blog', blog.slug] });
             setIsLiked(!isLiked);
           }
-        }).catch((error) => {
-
+        }).catch((error: any) => {
+          logError("blog", "component", "handleLikeBlog", error);
         });
 
     } catch (error) {

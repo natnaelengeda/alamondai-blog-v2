@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react'
+import React from 'react'
 
 // Components
 import LoadingBlogs from './loading-blogs';
@@ -17,7 +17,7 @@ import { IBlog } from '@/types/blog';
 
 export default function LatestBlogs() {
 
-  const { isPending, isError, data, error } = useQuery({
+  const { isPending, isError, data } = useQuery({
     queryKey: ['latest-blogs'],
     queryFn: fetchLatestBlogs
   })

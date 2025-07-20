@@ -11,13 +11,13 @@ import { getBlogForUser } from '@/api/blog';
 
 // Types
 import { IBlog } from '@/types/blog';
-import { FaPlus, FaPlusCircle } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 
 
 export default function Posts() {
   const router = useRouter();
 
-  const { isPending, isError, data, error } = useQuery({
+  const { isPending, isError, data } = useQuery({
     queryKey: ['current-user-blog'],
     queryFn: getBlogForUser,
     staleTime: 5 * 60 * 1000, // ✅ 5 minutes fresh

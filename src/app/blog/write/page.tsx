@@ -15,6 +15,7 @@ import 'react-quill/dist/quill.snow.css'
 import axios from "@/utils/axios";
 import toast from 'react-hot-toast';
 import Form from './components/Form';
+import { logError } from "@/utils/logError";
 
 import imageCompression from "browser-image-compression";
 import { auth } from '@/lib/firebase';
@@ -43,9 +44,7 @@ export default function Page() {
   const [image, setImage] = useState<ImageFile | null>(null);
 
   const [loading, setLaoding] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [isCompressingImage, setIsCompressingImage] = useState<boolean>(false);
-  const [imgUploadResult, setImgUploadResult] = useState('');
 
 
   const handleFileSelect = useCallback(async (file: File[]) => {
@@ -73,14 +72,12 @@ export default function Page() {
   }, [image]);
 
 
-  const removeImage = (id: string) => {
+  const removeImage = () => {
     setImage(null);
   }
 
   const uploadImageAsBinary = async () => {
     try {
-      setUploading(true);
-      setImgUploadResult('');
 
       if (image) {
 
@@ -179,7 +176,8 @@ export default function Page() {
       }).finally(() => {
         setLaoding(false);
       })
-    } catch (error) {
+    } catch (error: any) {
+      logError("blog", "page", "uploadFunction", error);
     }
   }
 

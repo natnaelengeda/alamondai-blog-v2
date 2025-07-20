@@ -15,9 +15,6 @@ import { logEvent } from "firebase/analytics";
 
 // React Query
 import {
-  useQuery,
-  useMutation,
-  useQueryClient,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'

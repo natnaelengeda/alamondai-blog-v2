@@ -12,7 +12,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(async (config) => {
-  // @ts-ignore - extend config with custom flag
+  // @ts-expect-error TS(2339): Property 'skipAuth' does not exist on type 'AxiosRequestConfig'.
   if (config.skipAuth) return config;
 
   const auth = getAuth();

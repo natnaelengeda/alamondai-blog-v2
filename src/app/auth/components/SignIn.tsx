@@ -10,6 +10,7 @@ import { Button, Text } from '@mantine/core'
 // Axios
 import axios from "@/utils/axios";
 import toast from 'react-hot-toast';
+import { logError } from "@/utils/logError";
 
 // Firebase
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -91,7 +92,8 @@ export default function SignIn({ setStep }: ISignIn) {
           }));
         }
       }
-    }).catch((error) => {
+    }).catch((error: any) => {
+      logError("auth", "component", "GoogleSignIn", error);
       toast.error("Unable to Login");
     });
   }

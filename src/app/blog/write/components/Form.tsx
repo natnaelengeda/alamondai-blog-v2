@@ -1,9 +1,9 @@
 import React from 'react';
 
 // Mantine
-import { Group, Loader, TextInput, Text, Paper, ActionIcon, Badge, Image } from '@mantine/core';
+import { Group, TextInput, Text, Paper, ActionIcon, Badge, Image } from '@mantine/core';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
-import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
 interface IForm {
   title: string;

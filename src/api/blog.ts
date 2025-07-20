@@ -5,6 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 // Types
 import { IBlog } from "@/types/blog";
 
+const logError = async (page: string, type: string, api: string, error: any) => {
+  try {
+    await axios.post("/errors", { page, type, api, error: error.message });
+  } catch (e) {
+    console.error("Failed to log error:", e);
+  }
+};
+
 export const fetchLatestBlogs = async () => {
   try {
     const result = await axios.get("/blog");
@@ -14,7 +22,8 @@ export const fetchLatestBlogs = async () => {
       return result.data;
     }
 
-  } catch (error) {
+  } catch (error: any) {
+    logError("blog", "api", "fetchLatestBlogs", error);
     return null;
   }
 }
@@ -27,7 +36,8 @@ export const fetchFeaturedBlog = async () => {
     if (status == 200) {
       return result.data;
     }
-  } catch (error) {
+  } catch (error: any) {
+    logError("blog", "api", "fetchFeaturedBlog", error);
     return null;
   }
 }
