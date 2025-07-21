@@ -6,6 +6,11 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
         pathname: "/blog/image/**"
+      },
+      {
+        protocol: "https",
+        hostname: "api.alamondaii.com",
+        pathname: "/blog/image/**"
       }
     ],
   },
