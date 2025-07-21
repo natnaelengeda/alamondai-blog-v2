@@ -166,7 +166,8 @@ export default function UpdateProfilePictureModal({ opened, close, avatarColor, 
                 onClick={() => {
                   setImage(null);
                 }}
-                className='ml-4'>
+                className='ml-4'
+                disabled={loading}>
                 Remove Image
               </Button>
             )

@@ -13,7 +13,6 @@ export async function generateMetadata({ params }: any) {
   const slug = params.slug;
   const blog: IBlog = await getBlogBySlug(slug);
 
-  console.log(blog)
   const url = process.env.NODE_ENV == "development" ?
     `http://localhost:3000/blog/${slug}` :
     `https://blog.alamondai.com/blog/${slug}`

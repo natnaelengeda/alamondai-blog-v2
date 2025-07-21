@@ -77,7 +77,6 @@ export default function Profile() {
     setLoading(true);
     updateUserProfile(value)
       .then((response) => {
-        console.log(response)
         const user = response.user;
 
         form.setValues({

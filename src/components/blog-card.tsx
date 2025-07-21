@@ -11,6 +11,9 @@ import { useDisclosure } from '@mantine/hooks';
 import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
 
+// Utils
+import { truncateText } from '@/utils/truncateText';
+
 // AppAsset
 import AppAsset from '@/core/AppAsset';
 
@@ -18,6 +21,8 @@ import AppAsset from '@/core/AppAsset';
 import { IBlog } from '@/types/blog';
 import { MdRemoveCircleOutline } from 'react-icons/md';
 import DeleteBlogModal from './delete-blog-modal';
+
+
 
 export type BlogCardProps = {
   blog: IBlog;
@@ -83,8 +88,14 @@ export default function BlogCard({ blog, owner = false }: BlogCardProps) {
         <header className="flex items-center gap-3">
           <div
             className='flex flex-col items-start justify-start'>
-            <h2 className="text-lg font-semibold text-gray-900">{blog.title}</h2>
-            <h2 className="prose max-w-full text-gray-700 text-sm">{blog.excerpt}</h2>
+            <h2
+              className="text-lg font-semibold text-gray-900">
+              {truncateText(blog.title, 55)}
+            </h2>
+            <h2
+              className="prose max-w-full text-gray-700 text-sm">
+              {truncateText(blog.excerpt, 80)}
+            </h2>
           </div>
         </header>
 

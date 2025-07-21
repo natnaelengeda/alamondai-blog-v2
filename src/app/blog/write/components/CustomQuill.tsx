@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -76,18 +76,31 @@ const CustomQuill = ({ content, setContent }: IEditor) => {
       handlers: {
         image: CustomImageHandler(quillRef),
       },
+      clipboard: {
+        matchVisual: false,
+      },
+      scrollingContainer: '.quill-editor', // Important
     },
   }), []);
 
+  useEffect(() => {
+    const toolbar = document.querySelector(".ql-toolbar");
+    if (toolbar) {
+      toolbar.classList.add("sticky", "top-0", "z-50", "bg-white", "border-b");
+    }
+  }, []);
+
   return (
-    <ReactQuill className='w-full'
-      ref={quillRef}
-      value={content}
-      onChange={setContent}
-      modules={modules}
-      formats={formats}
-      theme="snow"
-      placeholder="Write your blog here..." />
+    <div className="quill-editor w-full h-auto max-h-[80vh] overflow-y-auto border border-gray-300">
+      <ReactQuill className='w-full'
+        ref={quillRef}
+        value={content}
+        onChange={setContent}
+        modules={modules}
+        formats={formats}
+        theme="snow"
+        placeholder="Write your blog here..." />
+    </div>
   );
 };
 

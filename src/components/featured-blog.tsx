@@ -19,6 +19,7 @@ import AppAsset from '@/core/AppAsset';
 // Utils
 import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
+import { truncateText } from '@/utils/truncateText';
 
 export const convertFullDateToDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -115,7 +116,7 @@ export default function FeaturedBlog() {
 
         {/* Image Card */}
         <div
-          className="w-full h-70 bg-gray-200 rounded col-span-2">
+          className="w-full h-75 bg-gray-200 rounded col-span-2">
           {/* Cover image if exists */}
           {data[0].cover_image_url ? (
             <Image
@@ -139,10 +140,10 @@ export default function FeaturedBlog() {
         <div className='w-full col-span-1 flex flex-col gap-4 md:gap-10'>
           <div className="space-y-2 md:mt-4">
             <div className="w-full">
-              <h1 className='text-lg md:text-3xl font-bold'>{data[0].title}</h1>
+              <h1 className='text-lg md:text-3xl font-bold'>{truncateText(data[0].title, 50)}</h1>
             </div>
             <div className="w-5/6">
-              <p className='text-sm md:text-lg font-light'>{data[0].excerpt}</p></div>
+              <p className='text-sm md:text-lg font-light'>{truncateText(data[0].excerpt, 50)}</p></div>
           </div>
 
           <div className="w-full flex flex-row items-start justify-start gap-3">

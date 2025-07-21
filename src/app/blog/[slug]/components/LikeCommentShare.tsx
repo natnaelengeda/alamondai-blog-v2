@@ -59,7 +59,6 @@ export default function LikeCommentShare({ blog, isLiked, setIsLiked, user, open
     try {
       axios.post('/blog/like-blog', { blogId: blog.id })
         .then((response) => {
-          console.log(response);
           const status = response.status;
           if (status == 200) {
             queryClient.refetchQueries({ queryKey: ['blog', blog.slug] });
