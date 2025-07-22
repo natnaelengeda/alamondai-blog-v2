@@ -54,7 +54,7 @@ export default function Page() {
     }
 
     const options = {
-      maxSizeMB: .4,               // Maximum size in MB
+      maxSizeMB: .7,               // Maximum size in MB
       useWebWorker: true,
     };
 
@@ -76,46 +76,37 @@ export default function Page() {
     setImage(null);
   }
 
-  const uploadImageAsBinary = async () => {
+  const uploadImageAsFormData = async () => {
     try {
+      if (!image) return;
 
-      if (image) {
+      const file = image.file;
+      const user = auth.currentUser;
+      const token = await user?.getIdToken();
 
-        const file = image?.file;
-        const arrayBuffer = await file.arrayBuffer();
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('title', title); // if you want to send title too
 
-        const user = auth.currentUser;
-        const token = await user?.getIdToken();
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/upload/blog-image`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`, // Don't set Content-Type manually!
+        },
+        body: formData,
+      });
 
-        // Create headers with proper content type
-        const headers: HeadersInit = {
-          'Content-Type': file.type,
-          'Authorization': `Bearer ${token}`,
-          'X-File-Name': encodeURIComponent(title),
-          'X-File-Size': file.size.toString(),
-        };
-
-        // Send binary data
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/upload/blog-image`, {
-          method: 'POST',
-          headers,
-          body: arrayBuffer
-        });
-
-
-        if (!response.ok) {
-          throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
-        }
-
-        const result = await response.json();
-        return result;
-        // setImgUploadResult(`Upload successful! File ID: ${result.fileId}`);
-
+      if (!response.ok) {
+        throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
       }
+
+      const result = await response.json();
+      return result;
+
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
 
   const handleSave = async () => {
@@ -132,7 +123,7 @@ export default function Page() {
     if (!image) {
       uploadFunction(null);
     } else {
-      const uploadImageFunc = await uploadImageAsBinary();
+      const uploadImageFunc = await uploadImageAsFormData();
       const imageId = uploadImageFunc.id;
       uploadFunction(imageId);
     }

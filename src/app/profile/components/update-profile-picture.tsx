@@ -61,40 +61,37 @@ export default function UpdateProfilePictureModal({ opened, close, avatarColor, 
 
   const uploadImage = async () => {
     setLoading(true);
-    if (image) {
-      const file = image?.file;
-      const arrayBuffer = await file.arrayBuffer();
 
+    if (image) {
+      const file = image.file;
       const user = auth.currentUser;
       const token = await user?.getIdToken();
 
-      // Create headers with proper content type
-      const headers: HeadersInit = {
-        'Content-Type': file.type,
-        'Authorization': `Bearer ${token}`,
-        'X-File-Name': encodeURIComponent(file.name),
-        'X-File-Size': file.size.toString(),
-      };
+      const formData = new FormData();
+      formData.append('file', file); // 'file' must match the server field name
 
-      // Send binary data
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/upload/image`, {
         method: 'POST',
-        headers,
-        body: arrayBuffer
+        headers: {
+          'Authorization': `Bearer ${token}`, // DO NOT set Content-Type manually for FormData!
+        },
+        body: formData,
       });
 
-      if (response.status == 200) {
+      if (response.ok) {
         const data = await response.json();
         setLoading(false);
         setImage(null);
         toast.success("Image Update Success");
         dispatch(updateProfileImage({ avatarUrl: data.imageUrl }));
         close();
+      } else {
+        const err = await response.text();
+        toast.error("Upload failed: " + err);
+        setLoading(false);
       }
-
-      setLoading(false);
     }
-  }
+  };
 
   return (
     <Modal

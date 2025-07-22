@@ -30,24 +30,19 @@ const CustomImageHandler = (quillRef: React.RefObject<ReactQuill>) => {
     input.onchange = async () => {
       const file = input.files?.[0];
       if (file) {
-        // const formData = new FormData();
-        // formData.append("image", file);
+        const user = auth.currentUser;
+        const token = await user?.getIdToken();
 
-        const arrayBuffer = await file.arrayBuffer();
-
-
-        // Create headers with proper content type
-        const headers: HeadersInit = {
-          'Content-Type': file.type,
-          'Authorization': `Bearer ${token}`,
-          'X-File-Name': encodeURIComponent(file.name),
-          'X-File-Size': file.size.toString(),
-        };
+        const formData = new FormData();
+        formData.append("file", file);
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/upload/blog-image-individual`, {
           method: "POST",
-          headers,
-          body: arrayBuffer,
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            // DO NOT set Content-Type manually when sending FormData
+          },
+          body: formData,
         });
 
         const data = await res.json();
