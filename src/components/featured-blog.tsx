@@ -71,8 +71,8 @@ export default function FeaturedBlog() {
 
 
   useEffect(() => {
-    if (data && data.length > 0) {
-      const init = initialExtract(data[0].user.fullName);
+    if (data) {
+      const init = initialExtract(data.user.fullName);
       const avatColor = lettersToHexColor(init);
       setInitials(init);
       setAvatarColor(avatColor);
@@ -109,19 +109,19 @@ export default function FeaturedBlog() {
     );
   }
 
-  if (!isPending && data && data.length > 0) {
+  if (!isPending && data) {
     return (
       <article
-        onClick={() => router.push(`/blog/${data[0].slug}`)}
+        onClick={() => router.push(`/blog/${data.slug}`)}
         className="w-full space-y-4 p-4 grid grid-cols-1 md:grid-cols-3 mx-auto md:gap-5 cursor-pointer">
 
         {/* Image Card */}
         <div
           className="w-full h-75 bg-gray-200 rounded col-span-2">
           {/* Cover image if exists */}
-          {data[0].cover_image_url ? (
+          {data.cover_image_url ? (
             <Image
-              src={`${process.env.NEXT_PUBLIC_API_URL}/blog/image/${data[0].cover_image_url.id}`}
+              src={`${process.env.NEXT_PUBLIC_API_URL}/blog/image/${data.cover_image_url.id}`}
               alt={`Cover for ${data.title}`}
               className="w-full h-full object-cover"
               width={700}       // Set to expected display width in pixels
@@ -141,10 +141,10 @@ export default function FeaturedBlog() {
         <div className='w-full col-span-1 flex flex-col gap-4 md:gap-10'>
           <div className="space-y-2 md:mt-4">
             <div className="w-full">
-              <h1 className='text-lg md:text-3xl font-bold'>{truncateText(data[0].title, 50)}</h1>
+              <h1 className='text-lg md:text-3xl font-bold'>{truncateText(data.title, 50)}</h1>
             </div>
             <div className="w-5/6">
-              <p className='text-sm md:text-lg font-light'>{truncateText(data[0].excerpt, 50)}</p></div>
+              <p className='text-sm md:text-lg font-light'>{truncateText(data.excerpt, 50)}</p></div>
           </div>
 
           <div className="w-full flex flex-row items-start justify-start gap-3">
@@ -159,11 +159,11 @@ export default function FeaturedBlog() {
             {/* Notes */}
             <div className="w-full flex flex-col items-start justify-start">
               <div className="">
-                <h1>{data[0].user.fullName}</h1>
+                <h1>{data.user.fullName}</h1>
               </div>
               <div
                 className="">
-                <p className='text-sm text-gray-400'>{convertFullDateToDate(data[0].published_at)}</p>
+                <p className='text-sm text-gray-400'>{convertFullDateToDate(data.published_at)}</p>
               </div>
             </div>
           </div>
