@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 import { Loader } from '@mantine/core';
@@ -19,6 +20,7 @@ import { logError } from "@/utils/logError";
 
 import imageCompression from "browser-image-compression";
 import { auth } from '@/lib/firebase';
+import { useQueryClient } from '@tanstack/react-query';
 // import CustomQuill from './components/CustomQuill';
 
 // const Editor = dynamic(() => import("./components/Editor"), { ssr: false });
@@ -36,6 +38,7 @@ interface ImageFile {
 }
 
 export default function Page() {
+  const router = useRouter();
   const user = useSelector((state: { user: UserState }) => state.user);
 
   const [title, setTitle] = useState("");
@@ -45,6 +48,7 @@ export default function Page() {
 
   const [loading, setLaoding] = useState(false);
   const [isCompressingImage, setIsCompressingImage] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
 
   const handleFileSelect = useCallback(async (file: File[]) => {
@@ -150,11 +154,15 @@ export default function Page() {
       }).then((response) => {
         const status = response.status;
         if (status == 200) {
+          const slug = response.data.slug;
           toast.success("Blog Posted Successfully!");
           setTitle("");
           setSummary("");
           setImage(null);
           setContent(initialContent);
+          router.push(`/blog/${slug}`);
+
+          queryClient.refetchQueries({ queryKey: ['latest-blogs-9-0'] })
         }
 
       }).catch((error) => {

@@ -4,7 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 
 // Types
 import { IBlog } from "@/types/blog";
+import { limit } from "firebase/firestore";
 
+interface ILatestBlog {
+  blogs: IBlog[];
+  pages: string;
+  totalCount: number;
+  nextPage: string | number | null;
+}
 const logError = async (page: string, type: string, api: string, error: any) => {
   try {
     await axios.post("/errors", { page, type, api, error: error.message });
@@ -13,19 +20,19 @@ const logError = async (page: string, type: string, api: string, error: any) => 
   }
 };
 
-export const fetchLatestBlogs = async () => {
-  try {
-    const result = await axios.get("/blog");
-    const status = result.status;
+export const fetchLatestBlogs = async (limit: number, offset: number): Promise<ILatestBlog> => {
+  const response = await axios.get(`/blog?limit=${limit}&offset=${offset}`);
+  return response.data;
+}
 
-    if (status == 200) {
-      return result.data;
-    }
-
-  } catch (error: any) {
-    logError("blog", "api", "fetchLatestBlogs", error);
-    return null;
-  }
+export const useAllBlog = (limit: number, offset: number) => {
+  return useQuery({
+    queryKey: [`latest-blogs-${limit}-${offset}`],
+    queryFn: () => fetchLatestBlogs(limit, offset),
+    enabled: true,
+    staleTime: 5 * 60 * 1000, // ✅ 5 minutes fresh
+    refetchOnWindowFocus: false, // 👌 prevent refetch when tab refocuses
+  });
 }
 
 export const fetchFeaturedBlog = async () => {
