@@ -79,8 +79,8 @@ export default function FeaturedBlog() {
     }
   }, [data]);
 
-  // if (isPending) {
-  if (true) {
+  if (isPending) {
+    // if (true) {
     return (
       <div className="w-full animate-pulse space-y-4 p-4 grid grid-cols-1 md:grid-cols-3 mx-auto md:gap-5">
 
