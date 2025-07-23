@@ -72,6 +72,9 @@ export default function LatestBlogs() {
             })
           )
         }
+        <LoadingBlogs
+          loading={isPending} />
+
         <div className='w-full md:col-span-2 lg:col-span-3 flex justify-end font-roboto pt-10'>
           <div
             className="pagination-controls w-full md:w-96 h-auto flex flex-row items-center justify-between">
@@ -97,8 +100,7 @@ export default function LatestBlogs() {
             </Button>
           </div>
         </div>
-        <LoadingBlogs
-          loading={isPending} />
+
       </div>
     </div>
   )

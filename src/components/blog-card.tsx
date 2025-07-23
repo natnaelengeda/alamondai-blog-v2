@@ -70,28 +70,17 @@ export default function BlogCard({ blog, owner = false }: BlogCardProps) {
               className='text-2xl font-bld text-white' />
           </div>
         }
-        {/* Cover image if exists */}
-        {blog.cover_image_url ? (
-          <Image
-            src={imgSource}
-            alt={`Cover for ${blog.title}`}
-            width={240}
-            height={192}
-            className="w-full h-60 md:h-48 object-cover border border-gray-300"
-            loading="lazy"
-            onError={() => {
-              setImgSource(AppAsset.DefaultBlogImage)
-            }}
-          />
-        ) : (
-          <Image
-            src={AppAsset.DefaultBlogImage}
-            alt={`Cover for ${blog.title}`}
-            className="w-full h-60 md:h-48 object-cover border border-gray-300"
-            loading="lazy"
-          />
-        )}
-
+        <Image
+          src={imgSource}
+          alt={`Cover for ${blog.title}`}
+          width={240}
+          height={192}
+          className="w-full h-60 md:h-48 object-cover border border-gray-300"
+          loading="lazy"
+          onError={() => {
+            setImgSource(AppAsset.DefaultBlogImage)
+          }}
+        />
         <header className="flex items-center gap-3">
           <div
             className='flex flex-col items-start justify-start'>
