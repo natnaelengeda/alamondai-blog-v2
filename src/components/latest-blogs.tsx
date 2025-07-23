@@ -5,11 +5,8 @@ import React, { useEffect, useState } from 'react'
 import LoadingBlogs from './loading-blogs';
 import BlogCard from './blog-card';
 
-// React Query
-import { useQuery } from '@tanstack/react-query';
-
 // api
-import { fetchLatestBlogs, useBlog, useAllBlog } from '@/api/blog';
+import { useAllBlog } from '@/api/blog';
 
 // Types
 import { IBlog } from '@/types/blog';
@@ -21,7 +18,7 @@ export default function LatestBlogs() {
   const [offSet, setOffset] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
 
-  const { data, isLoading, error } = useAllBlog(limit, offSet);
+  const { data, error, isPending } = useAllBlog(limit, offSet);
 
   useEffect(() => {
     if (data?.totalCount) {
@@ -68,7 +65,7 @@ export default function LatestBlogs() {
           error ? (
             <div className="py-4 text-lg font-bold text-center text-red-500 col-span-full">There is an error loading the latest blogs.</div>
           ) : (
-            !isLoading &&
+            !isPending &&
             data &&
             data.blogs.map((blog: IBlog, index: number) => {
               return (<BlogCard key={index} blog={blog} />)
@@ -101,7 +98,7 @@ export default function LatestBlogs() {
           </div>
         </div>
         <LoadingBlogs
-          loading={isLoading} />
+          loading={isPending} />
       </div>
     </div>
   )

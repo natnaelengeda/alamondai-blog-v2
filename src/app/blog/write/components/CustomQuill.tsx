@@ -19,9 +19,6 @@ const formats = [
 const CustomImageHandler = (quillRef: React.RefObject<ReactQuill>) => {
   return async () => {
 
-    const user = auth.currentUser;
-    const token = await user?.getIdToken();
-
     const input = document.createElement("input");
     input.setAttribute("type", "file");
     input.setAttribute("accept", "image/*");

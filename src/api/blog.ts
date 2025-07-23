@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 
 // Types
 import { IBlog } from "@/types/blog";
-import { limit } from "firebase/firestore";
 
 interface ILatestBlog {
   blogs: IBlog[];
