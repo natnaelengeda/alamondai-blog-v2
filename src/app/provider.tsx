@@ -29,10 +29,8 @@ import { Toaster } from 'react-hot-toast';
 
 // Progress Bar
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
-import NextNProgress from 'nextjs-progressbar';
 
 export const queryClient = new QueryClient()
-
 export default function Provider({
   children,
 }: Readonly<{

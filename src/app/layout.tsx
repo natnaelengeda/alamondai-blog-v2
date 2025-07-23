@@ -8,8 +8,6 @@ import Provider from "./provider";
 // MetaData 
 import { meta } from "@/meta/metadata";
 
-import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
-
 
 // Styles
 import "./globals.css";
@@ -29,11 +27,6 @@ export default function RootLayout({
       <body>
         <Provider>
           {children}
-          {/* <ProgressBar
-            height="10px"
-            color="#C32122"
-            options={{ showSpinner: false }}
-            shallowRouting /> */}
         </Provider>
       </body>
     </html>
