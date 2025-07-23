@@ -9,6 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 // Toast
 import toast from 'react-hot-toast';
+import { truncateText } from '@/utils/truncateText';
 
 interface IBlogShareModal {
   id: number;
@@ -41,7 +42,7 @@ export default function BlogShareModal({ id, slug, opened, close }: IBlogShareMo
       centered>
       <div className="flex flex-col gap-4">
         <div className='w-full h-auto min-h-10 rounded flex items-center justify-between pl-3 border border-gray-300'>
-          <p>{window.location.href}</p>
+          <p>{truncateText(window.location.href, 40)}</p>
           <Button
             className='flex-shrink-0'
             onClick={handleShareBlog}>

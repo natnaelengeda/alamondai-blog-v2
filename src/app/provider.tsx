@@ -27,6 +27,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 // Toast
 import { Toaster } from 'react-hot-toast';
 
+// Progress Bar
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+import NextNProgress from 'nextjs-progressbar';
+
 export const queryClient = new QueryClient()
 
 export default function Provider({
@@ -55,6 +59,11 @@ export default function Provider({
             <div
               className="w-full min-h-[calc(100vh-10rem)] pb-5 scroll-smooth">
               {children}
+              <ProgressBar
+                height="10px"
+                color="#C32122"
+                options={{ showSpinner: false }}
+                shallowRouting />
               <Toaster />
             </div>
             <Footer />

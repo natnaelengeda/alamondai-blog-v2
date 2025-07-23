@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 
 import Image from 'next/image';
+import DeleteBlogModal from './delete-blog-modal';
 
 // Mantine
 import { Avatar } from '@mantine/core';
@@ -10,8 +11,6 @@ import { useDisclosure } from '@mantine/hooks';
 // Utils
 import { initialExtract } from '@/utils/initialExtract';
 import { lettersToHexColor } from '@/utils/lettersToHexColor';
-
-// Utils
 import { truncateText } from '@/utils/truncateText';
 
 // AppAsset
@@ -20,8 +19,6 @@ import AppAsset from '@/core/AppAsset';
 // Types
 import { IBlog } from '@/types/blog';
 import { MdRemoveCircleOutline } from 'react-icons/md';
-import DeleteBlogModal from './delete-blog-modal';
-
 
 
 export type BlogCardProps = {
@@ -32,6 +29,7 @@ export type BlogCardProps = {
 export default function BlogCard({ blog, owner = false }: BlogCardProps) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure();
+  const [imgSource, setImgSource] = useState<any>(AppAsset.DefaultBlogImage)
 
   // Deleted blog
   const [deleteBlog, setDeleteBlogs] = useState<{ id: number, title: string } | null>(null);
@@ -45,6 +43,12 @@ export default function BlogCard({ blog, owner = false }: BlogCardProps) {
     setInitials(init);
     setAvatarColor(avatColor);
   }, [blog.user.fullName]);
+
+  useEffect(() => {
+    if (blog.cover_image_url) {
+      setImgSource(`${process.env.NEXT_PUBLIC_API_URL}/blog/image/${blog.cover_image_url.id}`);
+    }
+  }, [blog.cover_image_url]);
 
   return (
     <>
@@ -69,12 +73,15 @@ export default function BlogCard({ blog, owner = false }: BlogCardProps) {
         {/* Cover image if exists */}
         {blog.cover_image_url ? (
           <Image
-            src={`${process.env.NEXT_PUBLIC_API_URL}/blog/image/${blog.cover_image_url.id}`}
+            src={imgSource}
             alt={`Cover for ${blog.title}`}
             width={240}
             height={192}
-            className="w-full h-60 md:h-48 object-cover"
+            className="w-full h-60 md:h-48 object-cover border border-gray-300"
             loading="lazy"
+            onError={() => {
+              setImgSource(AppAsset.DefaultBlogImage)
+            }}
           />
         ) : (
           <Image

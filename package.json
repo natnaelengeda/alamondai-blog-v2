@@ -23,7 +23,9 @@
     "firebase": "^11.10.0",
     "jwt-decode": "^4.0.0",
     "next": "^14.2.30",
+    "next-nprogress-bar": "^2.4.7",
     "next-sitemap": "^4.2.3",
+    "nextjs-progressbar": "^0.0.16",
     "quill-image-resize-module-react": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -34,8 +36,7 @@
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "sharp": "^0.34.2",
-    "tabler-icons-react": "^1.56.0"
+    "sharp": "^0.34.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
