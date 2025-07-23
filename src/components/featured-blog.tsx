@@ -80,11 +80,12 @@ export default function FeaturedBlog() {
   }, [data]);
 
   if (isPending) {
+    // if (true) {
     return (
-      <div className="w-full animate-pulse space-y-4 p-4 grid grid-cols-3 mx-auto gap-5">
+      <div className="w-full animate-pulse space-y-4 p-4 grid grid-cols-1 md:grid-cols-3 mx-auto md:gap-5">
 
         {/* Image Card */}
-        <div className="w-full h-70 bg-gray-200 rounded col-span-2"></div>
+        <div className="w-full h-48 md:h-70 bg-gray-200 rounded col-span-2"></div>
 
         <div className='w-full col-span-1 flex flex-col gap-10'>
           <div className="space-y-2 mt-4">
