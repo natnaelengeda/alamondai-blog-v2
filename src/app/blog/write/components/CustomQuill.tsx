@@ -83,7 +83,7 @@ const CustomQuill = ({ content, setContent }: IEditor) => {
   }, []);
 
   return (
-    <div className="quill-editor w-full h-auto max-h-[80vh] overflow-y-auto border border-gray-300">
+    <div className="quill-editor w-full h-40 max-h-[80vh] overflow-y-auto border border-gray-300">
       <ReactQuill className='w-full'
         ref={quillRef}
         value={content}
