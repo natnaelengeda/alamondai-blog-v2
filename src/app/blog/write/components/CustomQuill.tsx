@@ -61,9 +61,20 @@ const CustomQuill = ({ content, setContent }: IEditor) => {
   const modules = useMemo(() => ({
     toolbar: {
       container: [
-        [{ header: [1, 2, false] }],
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ size: ["small", "normal", "large", "huge"] }],
+        [{ font: [] }],
+        [{ header: 1 }, { header: 2 }],
         ["bold", "italic", "underline"],
-        ["image", "code-block"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ indent: "-1" }, { indent: "+1" }],
+        [{ color: [] }, { background: [] }],
+        ["blockquote", "code-block"],
+        ["link", "image"],
+        [{ direction: "rtl" }],
+        [{ script: "sub" }, { script: "super" }],
+        [{ align: [] }],
+        ["clean"],
       ],
       handlers: {
         image: CustomImageHandler(quillRef),
@@ -83,7 +94,7 @@ const CustomQuill = ({ content, setContent }: IEditor) => {
   }, []);
 
   return (
-    <div className="quill-editor w-full h-40 max-h-[80vh] overflow-y-auto border border-gray-300">
+    <div className="quill-editor w-full h-auto min-h-80 max-h-[80vh] overflow-y-auto border border-gray-300">
       <ReactQuill className='w-full'
         ref={quillRef}
         value={content}
