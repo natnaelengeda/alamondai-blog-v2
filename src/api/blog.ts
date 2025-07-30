@@ -14,8 +14,8 @@ interface ILatestBlog {
 const logError = async (page: string, type: string, api: string, error: any) => {
   try {
     await axios.post("/errors", { page, type, api, error: error.message });
-  } catch (e) {
-    console.error("Failed to log error:", e);
+  } catch (error) {
+    console.error("Failed to log error:", error);
   }
 };
 

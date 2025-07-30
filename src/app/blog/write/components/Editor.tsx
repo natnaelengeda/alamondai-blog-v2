@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill'
 
 // firebase
 import { auth } from '@/lib/firebase';
+import { logError } from '@/utils/logError';
 
 interface IEditor {
   content: any;
@@ -74,8 +75,9 @@ export default function Editor({ content, setContent }: IEditor) {
         const quill = quillRef.current.getEditor();
         const range = quill.getSelection(true);
         quill.insertEmbed(range.index, 'image', url);
-      } catch (err) {
-        console.error('Image upload failed', err);
+      } catch (error) {
+        logError('image-upload', 'image-upload-function', 'image-upload', error)
+        // console.error('Image upload failed', err);
       }
     };
   };

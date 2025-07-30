@@ -69,7 +69,8 @@ export default function LikeCommentShare({ blog, isLiked, setIsLiked, user, open
         });
 
     } catch (error) {
-      console.error('Error liking blog:', error);
+      logError('like-blog', 'like-blog-function', 'blog-[slug]', error)
+      // console.error('Error liking blog:', error);
       alert('Failed to like blog.');
     }
   };

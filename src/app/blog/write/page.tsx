@@ -107,7 +107,9 @@ export default function Page() {
       return result;
 
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      logError('image-upload-individual', 'image-upload-function', 'image-upload', error)
+
     }
   };
 

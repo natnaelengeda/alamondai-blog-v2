@@ -69,7 +69,6 @@ export default function HeaderSearchComponent() {
         setResults(res.data);
         setLoading(false);
       }
-      console.log(res.data)
     } catch (error: any) {
       logError("component", "component", "searchBlogs", error);
     }

@@ -7,7 +7,7 @@ import DeleteBlogModal from './delete-blog-modal';
 // Mantine
 import { Avatar } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Menu, Button, Text } from '@mantine/core';
+import { Menu } from '@mantine/core';
 
 // Utils
 import { initialExtract } from '@/utils/initialExtract';
@@ -19,8 +19,6 @@ import AppAsset from '@/core/AppAsset';
 
 // Types
 import { IBlog } from '@/types/blog';
-import { MdRemoveCircleOutline } from 'react-icons/md';
-import { CiMenuBurger } from 'react-icons/ci';
 import { IconDotsVertical } from '@tabler/icons-react';
 
 

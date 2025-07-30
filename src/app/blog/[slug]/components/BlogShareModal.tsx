@@ -10,6 +10,7 @@ import { useQueryClient } from '@tanstack/react-query';
 // Toast
 import toast from 'react-hot-toast';
 import { truncateText } from '@/utils/truncateText';
+import { logError } from '@/utils/logError';
 
 interface IBlogShareModal {
   id: number;
@@ -29,7 +30,7 @@ export default function BlogShareModal({ id, slug, opened, close }: IBlogShareMo
       queryClient.refetchQueries({ queryKey: ['blog', slug] });
       close();
     } catch (error) {
-      console.error('Error sharing blog:', error);
+      logError('handle-share-blog', 'handle-share-blog', '/blog/share-blog', error)
       toast.error('Failed to copy link.');
     }
   };

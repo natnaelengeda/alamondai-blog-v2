@@ -3,7 +3,6 @@
 "use client";
 import React, { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
 
 import { Loader } from '@mantine/core';
 // import Form from './components/Form';
@@ -40,7 +39,7 @@ interface ImageFile {
   preview: string
   id: string
 }
-export default function page({ params }: any) {
+export default function Page({ params }: any) {
   const slug = params.slug;
   const router = useRouter();
   const user = useSelector((state: { user: UserState }) => state.user);
@@ -54,7 +53,7 @@ export default function page({ params }: any) {
   const [isCompressingImage, setIsCompressingImage] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
-  const { data, isPending, error } = useBlog(slug.toString());
+  const { data, isPending } = useBlog(slug.toString());
 
   const handleFileSelect = useCallback(async (file: File[]) => {
     setIsCompressingImage(true);
@@ -113,7 +112,8 @@ export default function page({ params }: any) {
       return result;
 
     } catch (error) {
-      console.error(error);
+      logError('image-upload', 'image-upload-function', 'image-upload', error)
+      // console.error(error);
     }
   };
 
@@ -185,7 +185,6 @@ export default function page({ params }: any) {
     }
   }
 
-  console.log(data)
   useEffect(() => {
     if (data && !isPending) {
       setTitle(data.title);
