@@ -14,13 +14,14 @@ interface IForm {
   removeImage: (id: string) => void;
   image: { file: File; preview: string; id: string } | null;
   isCompressingImage: boolean;
+  cover_image_url?: any;
 }
 
 const formatFileSize = (bytes: number) => {
   return (bytes / 1024).toFixed(1) + " KB"
 }
 
-export default function Form({ title, setTitle, summary, setSummary, handleFileSelect, removeImage, image, isCompressingImage }: IForm) {
+export default function Form({ title, setTitle, summary, setSummary, handleFileSelect, removeImage, image, cover_image_url, isCompressingImage }: IForm) {
   return (
     <div className='w-full h-auto grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5'>
       {/* Title */}
@@ -48,7 +49,7 @@ export default function Form({ title, setTitle, summary, setSummary, handleFileS
       <div
         className='flex flex-col gap-1'>
         <label
-          htmlFor="summary"
+          htmlFor="blog_image"
           className='font-semibold'>Blog Image</label>
         {
           image == null &&
@@ -127,8 +128,32 @@ export default function Form({ title, setTitle, summary, setSummary, handleFileS
 
           </div>
         )}
-
       </div>
+
+      {/* Previous Image */}
+      {cover_image_url &&
+        <div className='flex flex-col items-start justify-start'>
+          <label
+            htmlFor="previous_blog_image"
+            className='font-semibold'>Previous Blog Image</label>
+
+          {
+            cover_image_url ?
+              <div className='w-full h-[255px] overflow-hidden rounded-sm'>
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/blog/image/${cover_image_url.id}`}
+                  alt="Preview"
+                  height={100}
+                  fit="cover"
+                  className='w-full h-full object-cover'
+                  fallbackSrc="/placeholder.svg?height=100&width=150"
+                />
+              </div> :
+              <div className="flex pt-5">
+                <h1>No Previous Image</h1>
+              </div>
+          }
+        </div>}
     </div>
   )
 }

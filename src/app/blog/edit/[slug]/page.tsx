@@ -1,10 +1,12 @@
 "use client";
-import React, { useState, useCallback } from 'react'
+
+"use client";
+import React, { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 import { Loader } from '@mantine/core';
-import Form from './components/Form';
+// import Form from './components/Form';
 
 // redux
 import { useSelector } from 'react-redux';
@@ -23,7 +25,10 @@ import toast from 'react-hot-toast';
 import { logError } from "@/utils/logError";
 import imageCompression from "browser-image-compression";
 
-const CustomQuill = dynamic(() => import("./components/CustomQuill"), { ssr: false });
+// Api
+import { useBlog } from '@/api/blog';
+import Form from '../../write/components/Form';
+import CustomQuill from '../../write/components/CustomQuill';
 
 const initialContent = `
   <h1 style="color: #999;">Header 1</h1>
@@ -35,8 +40,8 @@ interface ImageFile {
   preview: string
   id: string
 }
-
-export default function Page() {
+export default function page({ params }: any) {
+  const slug = params.slug;
   const router = useRouter();
   const user = useSelector((state: { user: UserState }) => state.user);
 
@@ -49,6 +54,7 @@ export default function Page() {
   const [isCompressingImage, setIsCompressingImage] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
+  const { data, isPending, error } = useBlog(slug.toString());
 
   const handleFileSelect = useCallback(async (file: File[]) => {
     setIsCompressingImage(true);
@@ -143,7 +149,7 @@ export default function Page() {
     };
 
     try {
-      await axios.post("/blog", {
+      await axios.patch(`/blog/${data?.id}`, {
         title: blogData.title,
         summary: blogData.summary,
         content: blogData.content,
@@ -154,7 +160,7 @@ export default function Page() {
         const status = response.status;
         if (status == 200) {
           const slug = response.data.slug;
-          toast.success("Blog Posted Successfully!");
+          toast.success("Blog Update Successfull!");
           setTitle("");
           setSummary("");
           setImage(null);
@@ -166,8 +172,8 @@ export default function Page() {
 
       }).catch((error) => {
         const status = error.response.status;
-        if (status == 404) {
-          toast.error("Unable to find User");
+        if (status == 402) {
+          toast.error("User not allowed to Update");
         } else {
           toast.error("Internal Server Error");
         }
@@ -179,6 +185,15 @@ export default function Page() {
     }
   }
 
+  console.log(data)
+  useEffect(() => {
+    if (data && !isPending) {
+      setTitle(data.title);
+      setSummary(data.excerpt);
+      setContent(data.content);
+    }
+  }, [data, isPending]);
+
   return (
     <div className='container w-full h-full pt-10 mx-auto px-3 sm:px-10 xl:px-40 2xl:max-w-[1280px] '>
       <div className='flex flex-col items-start justify-start w-full h-full gap-5 px-4 mx:px-0'>
@@ -189,22 +204,25 @@ export default function Page() {
           setSummary={setSummary}
           image={image}
           isCompressingImage={isCompressingImage}
+          cover_image_url={data?.cover_image_url}
           handleFileSelect={handleFileSelect}
           removeImage={removeImage} />
+
         <CustomQuill
           content={content}
           setContent={setContent} />
+
         <div className='flex items-center justify-end w-full'>
           <button
-            className="px-4 py-2 text-white rounded-sm cursor-pointer bg-secondary hover:opacity-90"
+            className={`px-4 py-2 text-white rounded-sm cursor-pointer flex items-center justify-center gap-2 ${loading ? "bg-gray-200" : "bg-secondary hover:opacity-90"}`}
             disabled={loading}
             onClick={handleSave}>
             {
               loading ?
                 <><Loader
                   color="white"
-                  size="xs" /> Posting...</> :
-                <>Post</>
+                  size="xs" /> Updating...</> :
+                <>Update</>
             }
           </button>
         </div>

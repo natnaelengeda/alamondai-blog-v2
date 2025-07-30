@@ -7,6 +7,7 @@ import DeleteBlogModal from './delete-blog-modal';
 // Mantine
 import { Avatar } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { Menu, Button, Text } from '@mantine/core';
 
 // Utils
 import { initialExtract } from '@/utils/initialExtract';
@@ -19,6 +20,8 @@ import AppAsset from '@/core/AppAsset';
 // Types
 import { IBlog } from '@/types/blog';
 import { MdRemoveCircleOutline } from 'react-icons/md';
+import { CiMenuBurger } from 'react-icons/ci';
+import { IconDotsVertical } from '@tabler/icons-react';
 
 
 export type BlogCardProps = {
@@ -53,24 +56,41 @@ export default function BlogCard({ blog, owner = false }: BlogCardProps) {
   return (
     <>
       <article
-        onClick={() => {
-          router.push(`/blog/${blog.slug}`)
-        }}
         className="w-full relative space-y-4 p-4 max-w-3xl mx-auto transition-shadow duration-200 cursor-pointer">
         {
           owner == true &&
           <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setDeleteBlogs({ id: blog.id, title: blog.title })
-              open();
-            }}
-            className='absolute top-0 right-0 h-8 w-8 flex items-center justify-center bg-red-500 rounded-full z-20'>
-            <MdRemoveCircleOutline
-              className='text-2xl font-bld text-white' />
+            className='absolute top-5 right-5 h- w- flex items-center justify-center z-20'>
+            <Menu shadow="md" width={200}>
+              <Menu.Target>
+                <div className='flex items-center justify-center cursor-pointer rounded-full bg-gray-200 p-1 hover:bg-gray-300 transition-colors'>
+                  <IconDotsVertical size={20} />
+                </div>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                <Menu.Label>Options</Menu.Label>
+                <Menu.Item
+                  onClick={() => {
+                    router.push(`/blog/edit/${blog.slug}`)
+                  }}>
+                  Edit
+                </Menu.Item>
+                <Menu.Item
+                  onClick={() => {
+                    setDeleteBlogs({ id: blog.id, title: blog.title })
+                    open();
+                  }}>
+                  Delete
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           </div>
         }
         <Image
+          onClick={() => {
+            router.push(`/blog/${blog.slug}`)
+          }}
           src={imgSource}
           alt={`Cover for ${blog.title}`}
           width={240}
@@ -81,7 +101,11 @@ export default function BlogCard({ blog, owner = false }: BlogCardProps) {
             setImgSource(AppAsset.DefaultBlogImage)
           }}
         />
-        <header className="flex items-center gap-3">
+        <header
+          onClick={() => {
+            router.push(`/blog/${blog.slug}`)
+          }}
+          className="flex items-center gap-3">
           <div
             className='flex flex-col items-start justify-start'>
             <h2
@@ -95,7 +119,11 @@ export default function BlogCard({ blog, owner = false }: BlogCardProps) {
           </div>
         </header>
 
-        <div className='flex flex-row items-start justify-start gap-2'>
+        <div
+          onClick={() => {
+            router.push(`/blog/${blog.slug}`)
+          }}
+          className='flex flex-row items-start justify-start gap-2'>
           {/* Author avatar placeholder */}
           <div
             className="w-10 h-10 rounded-full bg-gray-300 hidden items-center justify-center text-gray-600 font-semibold select-none">
