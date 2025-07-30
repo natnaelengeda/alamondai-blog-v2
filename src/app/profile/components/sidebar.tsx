@@ -89,7 +89,7 @@ export default function Sidebar({ setActiveTab, activeTab }: any) {
       </nav>
 
       {/* Bottom Section */}
-      <div className="hidden md:flex p-4 border-t border-gray-200">
+      <div className="hidden md:flex flex-col p-4 border-t border-gray-200">
 
         <div className="flex items-center justify-between mb-2 text-sm text-gray-500">
           <span>Alamondai Blog</span>

@@ -57,7 +57,7 @@ export default function Header() {
           </Button>
 
           <Button
-            variant="outline"
+            // variant="outline"
             radius="xl"
             onClick={() => {
               router.push("/auth")
