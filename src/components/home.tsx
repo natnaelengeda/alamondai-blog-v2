@@ -8,6 +8,7 @@ import LatestBlogs from "@/components/latest-blogs";
 import FeaturedBlog from "@/components/featured-blog";
 import HeadingBar from "@/components/heading-bar";
 import NewsLetter from './newsletter';
+import TestComponent from './test-component';
 
 export default function Home() {
   const [tab, setTab] = useState<string>("latest");
@@ -32,8 +33,9 @@ export default function Home() {
 const LatestTab = () => {
   return (
     <>
-      <FeaturedBlog />
-      <LatestBlogs />
+      {/* <FeaturedBlog /> */}
+      {/* <LatestBlogs /> */}
+      <TestComponent />
     </>
   );
 }

@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 
 // Types
 import { IBlog } from "@/types/blog";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 interface ILatestBlog {
   blogs: IBlog[];
@@ -36,6 +38,8 @@ export const useAllBlog = (limit: number, offset: number) => {
 
 export const fetchFeaturedBlog = async () => {
   try {
+    const snapshot = await getDocs(collection(db, "blogs"));
+    
     const result = await axios.get('/blog/featured');
     const status = result.status;
 
