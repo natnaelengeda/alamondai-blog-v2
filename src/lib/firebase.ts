@@ -2,7 +2,7 @@
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { connectAuthEmulator, getAuth, } from "firebase/auth";
-import { getFirestore, } from "firebase/firestore";
+import { connectFirestoreEmulator, getFirestore, } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -20,11 +20,14 @@ const firebase = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp
 
 // Init services
 const auth = getAuth(firebase);
-const firestore = getFirestore(firebase);
+// const firestore = getFirestore(firebase);
+const db = getFirestore(firebase);
 
 // Connect emulators in development only
 if (process.env.NEXT_PUBLIC_USE_EMULATOR === 'true') {
+  console.log("⚡ Connecting to Firebase Emulators...");
   connectAuthEmulator(auth, "http://localhost:9099");
+  connectFirestoreEmulator(db, "localhost", 8080);
 }
 
 // Optional Analytics (browser-only)
@@ -40,4 +43,4 @@ if (typeof window !== "undefined") {
   });
 }
 
-export { firebase, analytics, auth, firestore };
+export { firebase, analytics, auth, db };

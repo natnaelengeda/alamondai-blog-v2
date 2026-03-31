@@ -5,9 +5,11 @@ import { useForm } from '@mantine/form';
 import { Button, PasswordInput, Text, TextInput, Loader } from '@mantine/core';
 
 // Firebase
+import { db } from '@/lib/firebase';
 import { auth } from '@/lib/firebase';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { showLoginError } from '@/lib/ui';
+import { doc, addDoc, setDoc, getDoc, getDocs, collection, query, where, limit } from "firebase/firestore";
 
 // State
 import { useDispatch } from 'react-redux';
@@ -67,72 +69,85 @@ export default function SignUpwithEmail({ setStep }: ISignIn) {
   });
 
   const sumbitFunction = async (value: Input) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
+      const checkUserWithEmail = await isEmailTaken(value.email);
 
-      axios.post("/user", {
-        fullName: value.fullName,
-        email: value.email.toLocaleLowerCase().trim(),
-        username: value.username.toLocaleLowerCase().trim(),
-        isVerified: false
-      }).then(async (response) => {
-        const status = response.status;
-        const msg = response.data.msg;
-        const userId = response.data.userId;
+      if (checkUserWithEmail) {
+        return toast.error("Email Already Registered");
+      }
 
-        if (status == 200) {
+      const userCredential = await createUserWithEmailAndPassword(auth, value.email, value.password);
+      if (userCredential && userCredential.user) {
+        const docRef = await addDoc(collection(db, "users"), {
+          fullName: value.fullName,
+          email: value.email,
+          signInMethod: "email-password",
+          username: value.username,
+          isVerified: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+        toast.success("Account created successfully! Please verify your email.");
+        await sendEmailVerification(userCredential.user);
+        dispatch(login({
+          isLoggedIn: true
+        }));
 
-          const userCredential = await createUserWithEmailAndPassword(auth, value.email, value.password);
-          if (userCredential && userCredential.user) {
-            const user = userCredential.user;
-            const idToken = await user.getIdToken();
-            localStorage.setItem("accessToken", idToken);
+        dispatch(addInfo({
+          name: value.fullName,
+          email: value.email,
+          username: value.username,
+          avatarUrl: "",
+        }));
 
-            // User creation was successful
-            toast.success("Account created successfully! Please verify your email.");
-            await sendEmailVerification(userCredential.user);
-            dispatch(login({
-              isLoggedIn: true
-            }));
+        dispatch(addId({
+          id: docRef.id
+        }))
 
-            dispatch(addInfo({
-              name: value.fullName,
-              email: value.email,
-              username: value.username,
-              avatarUrl: "",
-            }));
-
-            dispatch(addId({
-              id: userId
-            }))
-
-            setStep("verify-email");
-          } else {
-            toast.error("Failed to create account. Please try again.");
-          }
-        }
-
-        if (status == 201) {
-          if (msg == "email_in_use") {
-            return toast.error("Email Already Registered");
-          }
-
-          if (msg == "username_in_use") {
-            return toast.error("Username Already Taken");
-          }
-        }
-      }).catch((error) => {
-        const status = error.response.status;
-        if (status == 400) {
-          toast.error("Unable to Send OTP, Try Again Later");
-        };
-      }).finally(() => {
+        setStep("verify-email");
         setIsLoading(false);
-      })
 
-    } catch (error) {
-      showLoginError(error);
+      }
+    } catch (error: any) {
+      setIsLoading(false);
+      console.error("Error during sign up:", error);
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          console.log("This email is already registered.");
+          toast.error("This email is already registered.");
+          break;
+
+        case "auth/invalid-email":
+          console.log("Invalid email format.");
+          toast.error("Invalid email format.");
+          break;
+
+        case "auth/weak-password":
+          console.log("Password must be at least 6 characters.");
+          toast.error("Password must be at least 6 characters.");
+          break;
+
+        default:
+          console.log("Something went wrong. Please try again.");
+          toast.error("Something went wrong. Please try again.");
+      }
     }
+  }
+
+  async function isEmailTaken(email: string) {
+    const usersCollectionRef = collection(db, "users");
+
+    const usersExistsSnapshot = await getDocs(query(usersCollectionRef, limit(1)));
+    if (usersExistsSnapshot.empty) {
+      return false;
+    }
+
+    const q = query(usersCollectionRef, where("email", "==", email));
+
+    const snapshot = await getDocs(q);
+
+    return !snapshot.empty;
   }
 
   return (

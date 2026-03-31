@@ -13,11 +13,15 @@ import toast from 'react-hot-toast';
 import { logError } from "@/utils/logError";
 
 // Firebase
+import { db } from '@/lib/firebase';
+import { doc, addDoc, setDoc, getDoc, getDocs, collection } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 // State
 import { useDispatch } from 'react-redux';
 import { addId, addInfo, login } from '@/state/user';
+
+
 
 // AppAsset
 import AppAsset from '@/core/AppAsset';
@@ -34,6 +38,21 @@ export default function SignIn({ setStep }: ISignIn) {
   const router = useRouter();
   const dispatch = useDispatch();
 
+
+  const checkFirebase = async () => {
+    const docRef = doc(db, "test", "testDoc");
+    await setDoc(docRef, {
+      name: "Car Car",
+      email: "babab@gmail.com"
+    });
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+    } else {
+      console.log("No such document!");
+    }
+  }
+
   const GoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
@@ -49,7 +68,9 @@ export default function SignIn({ setStep }: ISignIn) {
       isLoggedIn: true,
     }));
 
-    router.push("/");
+    // router.push("/");
+    await getDoc(doc(db, "users", uid)).then()
+
     axios.post("/user/google-auth", {
       uid: uid,
       name: name,
@@ -127,6 +148,22 @@ export default function SignIn({ setStep }: ISignIn) {
               alt='Google Auth'
               className='w-5 h-5 object-contain' />
             Sign in with Google
+          </span>
+        </Button>
+
+        <Button
+          onClick={checkFirebase}
+          variant="outline"
+          radius={"xl"}
+          style={{
+            width: "100%"
+          }}>
+          <span className='flex items-center gap-2'>
+            <Image
+              src={AppAsset.GoogleIcon}
+              alt='Google Auth'
+              className='w-5 h-5 object-contain' />
+            Check Firebase
           </span>
         </Button>
 

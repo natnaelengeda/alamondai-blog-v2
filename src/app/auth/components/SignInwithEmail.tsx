@@ -10,6 +10,10 @@ import { Button, PasswordInput, Text, TextInput, Loader } from '@mantine/core';
 import { useDispatch } from 'react-redux';
 import { addId, addInfo, login } from '@/state/user';
 
+// firebase
+import { db } from '@/lib/firebase';
+import { doc, addDoc, setDoc, getDoc, getDocs, collection, query, where, limit } from "firebase/firestore";
+
 // Axios
 import axios from "@/utils/axios";
 
@@ -69,38 +73,34 @@ export default function SignInwithEmail({ setStep }: ISignIn) {
             isLoggedIn: true
           }));
 
+
+
+          const usersCollectionRef = collection(db, "users");
+          const q = query(
+            usersCollectionRef,
+            where("email", "==", value.email),
+            limit(1)
+          );
+
+          const snapshot = await getDocs(q);
+          const id = snapshot.docs[0].id;
+          const user = snapshot.docs[0].data();
+          console.log(id, user);
+
+
+          dispatch(addId({
+            id: id,
+          }));
+
+          dispatch(addInfo({
+            name: user.fullName,
+            email: value.email,
+            username: user.username,
+            avatarUrl: user.profileImage ?? ""
+          }));
+
           router.push("/");
           toast.success("Login Success");
-
-          axios.post("/user/login", {
-            email: value.email,
-          }).then((response) => {
-            const status = response.status;
-            if (status == 200) {
-              const data: IUser = response.data;
-
-              dispatch(addId({
-                id: data.id,
-              }));
-
-              dispatch(addInfo({
-                name: data.name,
-                email: value.email,
-                username: data.username,
-                avatarUrl: data.profileImage
-              }));
-
-
-            }
-          }).catch((error: any) => {
-            logError("auth", "component", "SignInwithEmail", error);
-            const status = error.response.status;
-            if (status == 404) {
-              toast.error("User Not Found, Signup Again");
-            } else {
-              toast.error("Internal Server Error");
-            }
-          })
 
         })
         .catch((error) => {
